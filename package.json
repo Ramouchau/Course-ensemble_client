@@ -28,14 +28,11 @@
     "ionicons": "3.0.0",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.26",
-    "@ionic-native/camera": "4.5.3",
-    "aws-amplify": "^0.2.9"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.11",
-    "typescript": "~2.6.2",
-    "@types/node": "^9.4.0"
+    "typescript": "~2.6.2"
   },
   "description": "An Ionic project"
 }
