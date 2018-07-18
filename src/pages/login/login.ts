@@ -1,50 +1,55 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
-import { User } from '../../providers';
-import { MainPage } from '../';
+import { NavController, LoadingController } from 'ionic-angular';
+import { Auth, Logger } from 'aws-amplify';
 
-@IonicPage()
+import { TabsPage } from '../tabs/tabs';
+import { SignupPage } from '../signup/signup';
+import { ConfirmSignInPage } from '../confirmSignIn/confirmSignIn';
+
+const logger = new Logger('Login');
+
+export class LoginDetails {
+  username: string;
+  password: string;
+}
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  // The account fields for the login form.
-  // If you're using the username field with or without email, make
-  // sure to add it to the type
-  account: { email: string, password: string } = {
-    email: 'test@example.com',
-    password: 'test'
-  };
-
-  // Our translated text strings
-  private loginErrorString: string;
+  
+  public loginDetails: LoginDetails;
 
   constructor(public navCtrl: NavController,
-    public user: User,
-    public toastCtrl: ToastController,
-    public translateService: TranslateService) {
-
-    this.translateService.get('LOGIN_ERROR').subscribe((value) => {
-      this.loginErrorString = value;
-    })
+              public loadingCtrl: LoadingController) {
+    this.loginDetails = new LoginDetails(); 
   }
 
-  // Attempt to login in through our User service
-  doLogin() {
-    this.user.login(this.account).subscribe((resp) => {
-      this.navCtrl.push(MainPage);
-    }, (err) => {
-      this.navCtrl.push(MainPage);
-      // Unable to log in
-      let toast = this.toastCtrl.create({
-        message: this.loginErrorString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+  login() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
     });
+    loading.present();
+
+    let details = this.loginDetails;
+    logger.info('login..');
+    Auth.signIn(details.username, details.password)
+      .then(user => {
+        logger.debug('signed in user', user);
+        if (user.challengeName === 'SMS_MFA') {
+          this.navCtrl.push(ConfirmSignInPage, { 'user': user });
+        } else {
+          this.navCtrl.setRoot(TabsPage);
+        }
+      })
+      .catch(err => logger.debug('errrror', err))
+      .then(() => loading.dismiss());
   }
+
+  signup() {
+    this.navCtrl.push(SignupPage);
+  }
+
 }

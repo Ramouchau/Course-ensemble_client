@@ -1,96 +1,151 @@
-# The Ionic Super Starter 🎮
+# Ionic AWS Starter
 
-<img src="https://user-images.githubusercontent.com/236501/32385619-bddac0ac-c08c-11e7-9ee4-9c892197191f.png" width="400" />
+This Ionic starter comes with a pre-configured [AWS Mobile Hub](https://aws.amazon.com/mobile/) project set up to use Amazon DynamoDB, S3, Pinpoint, and Cognito.
 
-The Ionic Super Starter is a batteries-included starter project for Ionic apps
-complete with pre-built pages, providers, and best practices for Ionic
-development.
+## Using the Starter
 
-The goal of the Super Starter is to get you from zero to app store faster than
-before, with a set of opinions from the Ionic team around page layout,
-data/user management, and project structure.
+### Installing Ionic CLI 3.0
 
-The way to use this starter is to pick and choose the various page types you
-want use, and remove the ones you don't. If you want a blank slate, this
-starter isn't for you (use the `blank` type instead).
-
-One of the big advances in Ionic was moving from a rigid route-based navigation
-system to a flexible push/pop navigation system modeled off common native SDKs.
-We've embraced this pattern to provide a set of reusable pages that can be
-navigated to anywhere in the app. Take a look at the [Settings
-page](https://github.com/ionic-team/starters/blob/master/ionic-angular/official/super/src/pages/settings/settings.html)
-for a cool example of a page navigating to itself to provide a different UI
-without duplicating code.
-
-## Table of Contents
-
-1. [Getting Started](#getting-started)
-2. [Pages](#pages)
-3. [Providers](#providers)
-4. [i18n](#i18n) (adding languages)
-
-## <a name="getting-started"></a>Getting Started
-
-To test this starter out, install the latest version of the Ionic CLI and run:
+This starter project requires Ionic CLI 3.0, to install, run
 
 ```bash
-ionic start mySuperApp super
+npm install -g ionic@latest
 ```
 
-## Pages
+Make sure to add `sudo` on Mac and Linux. If you encounter issues installing the Ionic 3 CLI, uninstall the old one using `npm uninstall -g ionic` first.
 
-The Super Starter comes with a variety of ready-made pages. These pages help
-you assemble common building blocks for your app so you can focus on your
-unique features and branding.
+### Installing AWSMobile CLI
 
-The app loads with the `FirstRunPage` set to `TutorialPage` as the default. If
-the user has already gone through this page once, it will be skipped the next
-time they load the app.
+```
+npm install -g awsmobile-cli
+```
 
-If the tutorial is skipped but the user hasn't logged in yet, the Welcome page
-will be displayed which is a "splash" prompting the user to log in or create an
-account.
+### Creating the Ionic Project
 
-Once the user is authenticated, the app will load with the `MainPage` which is
-set to be the `TabsPage` as the default.
+To create a new Ionic project using this AWS Mobile Hub starter, run
 
-The entry and main pages can be configured easily by updating the corresponding
-variables in
-[src/pages/index.ts](https://github.com/ionic-team/starters/blob/master/ionic-angular/official/super/src/pages/index.ts).
+```bash
+ionic start myApp aws
+```
 
-Please read the
-[Pages](https://github.com/ionic-team/starters/tree/master/ionic-angular/official/super/src/pages)
-readme, and the readme for each page in the source for more documentation on
-each.
+Which will create a new app in `./myApp`.
 
-## Providers
+Once the app is created, `cd` into it:
 
-The Super Starter comes with some basic implementations of common providers.
+```bash
+cd myApp
+```
 
-### User
+### Creating AWS Mobile Hub Project
 
-The `User` provider is used to authenticate users through its
-`login(accountInfo)` and `signup(accountInfo)` methods, which perform `POST`
-requests to an API endpoint that you will need to configure.
+Init AWSMobile project 
 
-### Api
+```bash
+awsmobile init
 
-The `Api` provider is a simple CRUD frontend to an API. Simply put the root of
-your API url in the Api class and call get/post/put/patch/delete 
+Please tell us about your project:
+? Where is your project's source directory:  src
+? Where is your project's distribution directory that stores build artifacts:  dist
+? What is your project's build command:  npm run-script build
+? What is your project's start command for local test run:  ionic serve
 
-## i18n
+? What awsmobile project name would you like to use:  ...
 
-Ionic Super Starter comes with internationalization (i18n) out of the box with
-[ngx-translate](https://github.com/ngx-translate/core). This makes it easy to
-change the text used in the app by modifying only one file. 
+Successfully created AWS Mobile Hub project: ...
+```
 
-### Adding Languages
+Enable user-signin and database features
 
-To add new languages, add new files to the `src/assets/i18n` directory,
-following the pattern of LANGCODE.json where LANGCODE is the language/locale
-code (ex: en/gb/de/es/etc.).
+```bash
+awsmobile features
 
-### Changing the Language
+? select features:
+ ◉ user-signin
+ ◉ user-files
+ ◯ cloud-api
+❯◉ database
+ ◉ analytics
+ ◉ hosting
+```
 
-To change the language of the app, edit `src/app/app.component.ts` and modify
-`translate.use('en')` to use the LANGCODE from `src/assets/i18n/`
+Configure database, create a table with name `tasks`
+
+```bash
+awsmobile database configure
+
+? Select from one of the choices below. Create a new table
+
+Welcome to NoSQL database wizard
+You will be asked a series of questions to help determine how to best construct your NoSQL database table.
+
+? Should the data of this table be open or restricted by user? Open
+? Table name tasks
+
+ You can now add columns to the table.
+
+? What would you like to name this column taskId
+? Choose the data type string
+? Would you like to add another column Yes
+? What would you like to name this column userId
+? Choose the data type string
+? Would you like to add another column Yes
+? What would you like to name this column category
+? Choose the data type string
+? Would you like to add another column Yes
+? What would you like to name this column description
+? Choose the data type string
+? Would you like to add another column Yes
+? What would you like to name this column created
+? Choose the data type number
+? Would you like to add another column No
+
+... /* primary and sort key */
+
+? Select primary key userId
+? Select sort key taskId
+
+... /* index */
+
+? Add index Yes
+? Index name DateSorted
+? Select partition key userId
+? Select sort key created
+? Add index No
+Table tasks saved
+```
+
+Finally push the changes to server side
+
+```bash
+awsmobile push
+```
+
+### Running the app
+
+Now the app is configured and wired up to the AWS Mobile Hub and AWS services. To run the app in the browser, run
+
+```bash
+ionic serve
+```
+
+To run the app on device, first add a platform, and then run it:
+
+```bash
+ionic cordova platform add ios
+ionic cordova run ios
+```
+
+Or open the platform-specific project in the relevant IDE:
+
+```bash
+open platforms/ios/MyApp.xcodeproj
+```
+
+### Hosting app on Amazon S3
+
+Since your Ionic app is just a web app, it can be hosted as a static website in an Amazon S3 bucket.
+
+```
+npm run build
+awsmobile publish
+```

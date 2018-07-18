@@ -1,53 +1,55 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
-import { User } from '../../providers';
-import { MainPage } from '../';
+import { NavController, LoadingController } from 'ionic-angular';
+import { Auth, Logger } from 'aws-amplify';
 
-@IonicPage()
+import { LoginPage } from '../login/login';
+import { ConfirmSignUpPage } from '../confirmSignUp/confirmSignUp';
+
+const logger = new Logger('SignUp');
+
+export class UserDetails {
+    username: string;
+    email: string;
+    phone_number: string;
+    password: string;
+}
+
 @Component({
   selector: 'page-signup',
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  // The account fields for the login form.
-  // If you're using the username field with or without email, make
-  // sure to add it to the type
-  account: { name: string, email: string, password: string } = {
-    name: 'Test Human',
-    email: 'test@example.com',
-    password: 'test'
-  };
 
-  // Our translated text strings
-  private signupErrorString: string;
+  public userDetails: UserDetails;
+
+  error: any;
 
   constructor(public navCtrl: NavController,
-    public user: User,
-    public toastCtrl: ToastController,
-    public translateService: TranslateService) {
-
-    this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
-      this.signupErrorString = value;
-    })
+              public loadingCtrl: LoadingController) {
+   this.userDetails = new UserDetails();
   }
 
-  doSignup() {
-    // Attempt to login in through our User service
-    this.user.signup(this.account).subscribe((resp) => {
-      this.navCtrl.push(MainPage);
-    }, (err) => {
+  signup() {
 
-      this.navCtrl.push(MainPage);
-
-      // Unable to sign up
-      let toast = this.toastCtrl.create({
-        message: this.signupErrorString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
     });
+    loading.present();
+
+    let details = this.userDetails;
+    this.error = null;
+    logger.debug('register');
+    Auth.signUp(details.username, details.password, details.email, details.phone_number)
+      .then(user => {
+        this.navCtrl.push(ConfirmSignUpPage, { username: details.username });
+      })
+      .catch(err => { this.error = err; })
+      .then(() => loading.dismiss());
   }
+
+  login() {
+    this.navCtrl.push(LoginPage);
+  }
+
 }
