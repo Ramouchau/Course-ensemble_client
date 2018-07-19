@@ -8,7 +8,7 @@ import { MyApp } from './app.component';
 import {AuthService} from "../providers/auth-service";
 import {LoginPage} from "../pages/login/login";
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
