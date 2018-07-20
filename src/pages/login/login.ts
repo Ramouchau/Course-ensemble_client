@@ -18,6 +18,7 @@ export class LoginPage {
     }
 
     public login() {
+        console.log("Login")
         this.showLoading()
         this.auth.login(this.registerCredentials).subscribe(allowed => {
                 if (allowed) {
