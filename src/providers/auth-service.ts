@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
-import { UserRegisterRequest, UserRegisterResponse } from '../interfaces/auth-socket-interfaces'
+import { UserRegisterRequest } from '../interfaces/auth-socket-interfaces'
 
 import 'rxjs/add/operator/map';
 
@@ -19,21 +19,23 @@ export class User {
 export class AuthService {
 	currentUser: User = null;
 
-	constructor(private socket: Socket) {}
+	constructor(private socket: Socket) {
+
+	}
 
 	public login(credentials) {
-		if (credentials.email === null || credentials.password === null) {
+		this.socket.emit('login', credentials);
+		/*if (credentials.email === null || credentials.password === null) {
 			return Observable.throw("Please insert credentials");
 		} else {
 			return Observable.create(observer => {
 				// At this point make a request to your backend to make a real check!
-				let access = (credentials.password === "pass" && credentials.email === "email");
 				this.currentUser = new User('Simon', 'saimon@devdactic.com');
 				this.socket.emit('login', credentials)
-				observer.next(access);
+				observer.next(true);
 				observer.complete();
 			});
-		}
+		}*/
 	}
 
 	public register(credentials: UserRegisterRequest) {
@@ -61,5 +63,10 @@ export class AuthService {
 			observer.next(true);
 			observer.complete();
 		});
+	}
+
+	initListeners(){
+		this.socket.on('login', (data) => {
+		})
 	}
 }
