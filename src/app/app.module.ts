@@ -5,8 +5,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import {AuthService} from "../providers/auth-service/auth-service";
+import {AuthService} from "../providers/auth-service";
 import {LoginPage} from "../pages/login/login";
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import {LoginPage} from "../pages/login/login";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+		IonicModule.forRoot(MyApp),
+		SocketIoModule.forRoot(config)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

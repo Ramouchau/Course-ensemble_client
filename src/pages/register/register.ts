@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, IonicPage } from 'ionic-angular';
-import { AuthService } from '../../providers/auth-service/auth-service';
+import { AuthService } from '../../providers/auth-service';
 
 @IonicPage()
 @Component({
@@ -9,17 +9,17 @@ import { AuthService } from '../../providers/auth-service/auth-service';
 })
 export class RegisterPage {
     createSuccess = false;
-    registerCredentials = { email: '', password: '' };
+    registerCredentials = { email: '', username: '', password: '' };
 
     constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController) { }
 
     public register() {
         this.auth.register(this.registerCredentials).subscribe(success => {
                 if (success) {
-                    this.createSuccess = true;
-                    this.showPopup("Success", "Account created.");
+										this.createSuccess = true;
+										this.showPopup("Success", "Account created.");
                 } else {
-                    this.showPopup("Error", "Problem creating account.");
+										this.showPopup("Error", "Problem creating account.");
                 }
             },
             error => {
