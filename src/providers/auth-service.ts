@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
-import { UserRegisterRequest, UserRegisterResponse } from '../interfaces/auth-socket-interfaces'
+import { UserRegisterRequest } from '../interfaces/auth-socket-interfaces'
 
 import 'rxjs/add/operator/map';
 
@@ -20,23 +20,22 @@ export class AuthService {
 	currentUser: User = null;
 
 	constructor(private socket: Socket) {
-		socket.on('register', (data: UserRegisterResponse) => {
-			console.log(data);
-		})
+
 	}
 
 	public login(credentials) {
-		if (credentials.email === null || credentials.password === null) {
+		this.socket.emit('login', credentials);
+		/*if (credentials.email === null || credentials.password === null) {
 			return Observable.throw("Please insert credentials");
 		} else {
 			return Observable.create(observer => {
 				// At this point make a request to your backend to make a real check!
-				let access = (credentials.password === "pass" && credentials.email === "email");
 				this.currentUser = new User('Simon', 'saimon@devdactic.com');
-				observer.next(access);
+				this.socket.emit('login', credentials)
+				observer.next(true);
 				observer.complete();
 			});
-		}
+		}*/
 	}
 
 	public register(credentials: UserRegisterRequest) {
@@ -46,14 +45,10 @@ export class AuthService {
 		} else {
 			// At this point store the credentials to your backend!
 			//this.socket.emit('register', credentials)
-			console.log('1');
 			return Observable.create(observer => {
-				console.log('2');
-				this.socket.emit('register', credentials, (radad) => {
-					console.log('3');
-					observer.next(true);
-					observer.complete();
-				})
+				this.socket.emit('register', credentials)
+				observer.next(true);
+				observer.complete();
 			});
 		}
 	}
@@ -68,5 +63,10 @@ export class AuthService {
 			observer.next(true);
 			observer.complete();
 		});
+	}
+
+	initListeners(){
+		this.socket.on('login', (data) => {
+		})
 	}
 }
