@@ -7,7 +7,7 @@ page-login {
       padding-top: 50px;
       padding-bottom: 20px;
       width: 500px;
-      margin-left: -12%;
+      margin-left: -17%;
     }
 
     .login-box {
@@ -22,7 +22,9 @@ page-login {
       border:solid 1px #ff7c00;
       
     }
-
+    .list-md[inset] .item:last-child{
+      border-bottom:solid 1px #ff7c00;
+    }
     ion-row {
       align-items: center;
       text-align: center;
