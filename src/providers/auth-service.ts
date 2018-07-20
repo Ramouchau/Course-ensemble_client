@@ -1,66 +1,72 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
-import { UserRegisterRequest, UserRegisterResponse} from '../interfaces/auth-socket-interfaces'
+import { UserRegisterRequest, UserRegisterResponse } from '../interfaces/auth-socket-interfaces'
 
 import 'rxjs/add/operator/map';
 
 export class User {
-    name: string;
-    email: string;
+	name: string;
+	email: string;
 
-    constructor(name: string, email: string) {
-        this.name = name;
-        this.email = email;
-    }
+	constructor(name: string, email: string) {
+		this.name = name;
+		this.email = email;
+	}
 }
 
 @Injectable()
 export class AuthService {
-    currentUser: User = null;
+	currentUser: User = null;
 
-		constructor(private socket: Socket) {
-			socket.on('register', (data: UserRegisterResponse) =>{
-				console.log(data);
-			})
+	constructor(private socket: Socket) {
+		socket.on('register', (data: UserRegisterResponse) => {
+			console.log(data);
+		})
+	}
+
+	public login(credentials) {
+		if (credentials.email === null || credentials.password === null) {
+			return Observable.throw("Please insert credentials");
+		} else {
+			return Observable.create(observer => {
+				// At this point make a request to your backend to make a real check!
+				let access = (credentials.password === "pass" && credentials.email === "email");
+				this.currentUser = new User('Simon', 'saimon@devdactic.com');
+				observer.next(access);
+				observer.complete();
+			});
 		}
+	}
 
-    public login(credentials) {
-        if (credentials.email === null || credentials.password === null) {
-            return Observable.throw("Please insert credentials");
-        } else {
-            return Observable.create(observer => {
-                // At this point make a request to your backend to make a real check!
-                let access = (credentials.password === "pass" && credentials.email === "email");
-                this.currentUser = new User('Simon', 'saimon@devdactic.com');
-                observer.next(access);
-                observer.complete();
-            });
-        }
-    }
+	public register(credentials: UserRegisterRequest) {
+		console.log('0');
+		if (credentials.email === null || credentials.password === null) {
+			return Observable.throw("Please insert credentials");
+		} else {
+			// At this point store the credentials to your backend!
+			//this.socket.emit('register', credentials)
+			console.log('1');
+			return Observable.create(observer => {
+				console.log('2');
+				this.socket.emit('register', credentials, (radad) => {
+					console.log('3');
+					observer.next(true);
+					observer.complete();
+				})
+			});
+		}
+	}
 
-    public register(credentials: UserRegisterRequest) {
-        if (credentials.email === null || credentials.password === null) {
-            return Observable.throw("Please insert credentials");
-        } else {
-						// At this point store the credentials to your backend!
-						this.socket.emit('register', credentials)
-            return Observable.create(observer => {
-                observer.next(true);
-                observer.complete();
-            });
-        }
-    }
+	public getUserInfo(): User {
+		return this.currentUser;
+	}
 
-    public getUserInfo() : User {
-        return this.currentUser;
-    }
-
-    public logout() {
-        return Observable.create(observer => {
-            this.currentUser = null;
-            observer.next(true);
-            observer.complete();
-        });
-    }
+	public logout() {
+		return Observable.create(observer => {
+			this.currentUser = null;
+			observer.next(true);
+			observer.complete();
+		});
+	}
 }
