@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
-import { UserRegisterRequest } from '../interfaces/auth-socket-interfaces'
+import { UserRegisterRequest, UserLoginResponse } from '../interfaces/auth-socket-interfaces'
 
 import 'rxjs/add/operator/map';
 
@@ -20,7 +20,7 @@ export class AuthService {
 	currentUser: User = null;
 
 	constructor(private socket: Socket) {
-
+		this.initListeners();
 	}
 
 	public login(credentials) {
@@ -39,8 +39,8 @@ export class AuthService {
 	}
 
 	public register(credentials: UserRegisterRequest) {
-		console.log('0');
-		if (credentials.email === null || credentials.password === null) {
+		this.socket.emit('register', credentials)
+		/*if (credentials.email === null || credentials.password === null) {
 			return Observable.throw("Please insert credentials");
 		} else {
 			// At this point store the credentials to your backend!
@@ -50,7 +50,7 @@ export class AuthService {
 				observer.next(true);
 				observer.complete();
 			});
-		}
+		}*/
 	}
 
 	public getUserInfo(): User {
@@ -66,7 +66,10 @@ export class AuthService {
 	}
 
 	initListeners(){
-		this.socket.on('login', (data) => {
+		this.socket.on('login', (data : UserLoginResponse) => {
+			this.currentUser = new User(data.email, data.username);
+		})
+		this.socket.on('register', (data) => {
 		})
 	}
 }
