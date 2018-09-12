@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import {AuthService} from "../../providers/auth-service";
+import { CreatelistPage } from '../createlist/createlist';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,11 @@ export class HomePage {
             this.username = info['name'];
             this.email = info['email'];
         }
-    }
+		}
+
+		public createList(){
+			this.nav.push(CreatelistPage)
+		}
 
     public logout() {
         this.auth.logout().subscribe(succ => {

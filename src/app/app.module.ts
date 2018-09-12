@@ -12,7 +12,6 @@ import {HomePage} from "../pages/home/home";
 import {ListPage} from "../pages/list/list";
 import {CreatelistPage} from "../pages/createlist/createlist";
 import {ProfilePage} from "../pages/profile/profile";
-import {PagesServices} from "../providers/pages-services";
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -42,7 +41,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
-      PagesServices
   ]
 })
 export class AppModule {}

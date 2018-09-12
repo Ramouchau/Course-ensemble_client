@@ -5,8 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import {LoginPage} from "../pages/login/login";
 import {ListPage} from "../pages/list/list";
-import {CreatelistPage} from "../pages/createlist/createlist";
-import {PagesServices} from "../providers/pages-services";
 
 @Component({
   templateUrl: 'app.html'
@@ -14,13 +12,18 @@ import {PagesServices} from "../providers/pages-services";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage:any = LoginPage;
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public ps: PagesServices) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
     });
-  }
+	}
+
+
+	public openList() {
+		this.nav.push(ListPage);
+	}
 }
 
