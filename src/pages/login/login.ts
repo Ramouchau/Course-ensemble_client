@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage, NavOptions } from 'ionic-angular';
 import { Socket } from 'ng-socket-io';
 import { AuthService } from '../../providers/auth-service';
-import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -58,7 +57,7 @@ export class LoginPage {
 	initListener() {
 		this.socket.on('login', (data) => {
 			if (data.code == 200) {
-				this.nav.setRoot(HomePage);
+				this.nav.setRoot("HomePage");
 				this.nav.popToRoot();
 			}
 			else {

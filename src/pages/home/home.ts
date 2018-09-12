@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import {AuthService} from "../../providers/auth-service";
-import {LoginPage} from "../login/login";
 
 @IonicPage()
 @Component({
@@ -15,7 +14,7 @@ export class HomePage {
         let info = this.auth.getUserInfo();
         if (info == null)
         {
-            this.nav.setRoot(LoginPage);
+            this.nav.setRoot('LoginPage');
         }
         else {
             this.username = info['name'];
@@ -25,7 +24,7 @@ export class HomePage {
 
     public logout() {
         this.auth.logout().subscribe(succ => {
-            this.nav.setRoot(LoginPage)
+            this.nav.setRoot('LoginPage')
         });
     }
 }
