@@ -7,7 +7,6 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { AuthService } from "../providers/auth-service";
-import { LoginPage } from "../pages/login/login";
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 import { HomePage } from "../pages/home/home";
 import { ListPage } from "../pages/list/list";

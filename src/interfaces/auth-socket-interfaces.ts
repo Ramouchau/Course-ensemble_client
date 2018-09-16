@@ -18,18 +18,23 @@ export interface UserLoginResponse {
 	email?: string
 }
 
+export interface UserToken {
+	id: number,
+	email: string,
+	username: string,
+}
+
 export interface UserLoginRequest {
 	email: string,
 	password: string,
 }
 
-export interface getUserRequest {
+export interface GetUserRequest {
 	token: string
 }
 
-export interface getUserResponse {
+export interface GetUserResponse {
 	status: string,
 	code: number,
-	username?: string,
-	email?: string
+	user?: UserToken
 }
