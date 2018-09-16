@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage, NavOptions } from 'ionic-angular';
-import { Socket } from 'ng-socket-io';
 import { AuthService } from '../../providers/auth-service';
 
 @IonicPage()
@@ -12,9 +11,7 @@ export class LoginPage {
 	loading: Loading;
 	registerCredentials = { email: '', password: '' };
 
-	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private socket: Socket) {
-		this.initListener();
-	}
+	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
 
 	public createAccount() {
 		this.nav.push('RegisterPage');
@@ -22,20 +19,17 @@ export class LoginPage {
 
 	public login() {
 		this.showLoading()
-		this.auth.login(this.registerCredentials);
-		/*this.auth.login(this.registerCredentials).subscribe(allowed => {
-			if (allowed) {
-				this.nav.setRoot('HomePage');
-			} else {
-				this.showError("Access Denied");
+		this.auth.login(this.registerCredentials).subscribe(res => {
+			if (res) {
+				this.nav.setRoot("HomePage");
+				this.nav.popToRoot();
 			}
-		},
-			error => {
-				this.showError(error);
-			});*/
+		}, err => {
+				this.showError(err);
+		});
 	}
 
-	showLoading() {
+	private showLoading() {
 		this.loading = this.loadingCtrl.create({
 			content: 'Please wait...',
 			dismissOnPageChange: true
@@ -43,7 +37,7 @@ export class LoginPage {
 		this.loading.present();
 	}
 
-	showError(text) {
+	private showError(text) {
 		this.loading.dismiss();
 
 		let alert = this.alertCtrl.create({
@@ -52,17 +46,5 @@ export class LoginPage {
 			buttons: ['OK']
 		});
 		alert.present(<NavOptions>prompt);
-	}
-
-	initListener() {
-		this.socket.on('login', (data) => {
-			if (data.code == 200) {
-				this.nav.setRoot("HomePage");
-				this.nav.popToRoot();
-			}
-			else {
-				this.showError("Access Denied");
-			}
-		})
 	}
 }

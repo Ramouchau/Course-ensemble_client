@@ -1,60 +1,46 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, IonicPage, LoadingController, Loading, NavOptions } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { Socket } from 'ng-socket-io';
-
 @IonicPage()
 @Component({
 	selector: 'page-register',
 	templateUrl: 'register.html',
 })
 export class RegisterPage {
+	loading: Loading;
 	createSuccess = false;
 	registerCredentials = { email: '', username: '', password: '' };
 
-	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private socket: Socket) { }
+	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
 
 	public register() {
-		this.auth.register(this.registerCredentials)/*.subscribe(success => {
-                if (success) {
-										this.createSuccess = true;
-										this.showPopup("Success", "Account created.");
-                } else {
-										this.showPopup("Error", "Problem creating account.");
-                }
-            },
-            error => {
-                this.showPopup("Error", error);
-            });*/
-	}
-
-	showPopup(title, text) {
-		let alert = this.alertCtrl.create({
-			title: title,
-			subTitle: text,
-			buttons: [
-				{
-					text: 'OK',
-					handler: data => {
-						if (this.createSuccess) {
-							this.nav.popToRoot();
-						}
-					}
-				}
-			]
+		this.showLoading()
+		this.auth.register(this.registerCredentials).subscribe(res => {
+			if (res) {
+				this.nav.setRoot("HomePage");
+				this.nav.popToRoot();
+			}
+		}, err => {
+			this.showError(err);
 		});
-		alert.present();
 	}
 
-	initListener() {
-		this.socket.on('register', (data) => {
-			if (data.code == 200) {
-				this.createSuccess = true;
-				this.showPopup("Success", "Account created.");
-			}
-			else {
-				this.showPopup("Error", "Aleready existe.");
-			}
-		})
+	private showLoading() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...',
+			dismissOnPageChange: true
+		});
+		this.loading.present();
+	}
+
+	private showError(text) {
+		this.loading.dismiss();
+
+		let alert = this.alertCtrl.create({
+			title: 'Fail',
+			subTitle: text,
+			buttons: ['OK']
+		});
+		alert.present(<NavOptions>prompt);
 	}
 }
