@@ -22,3 +22,14 @@ export interface UserLoginRequest {
 	email: string,
 	password: string,
 }
+
+export interface getUserRequest {
+	token: string
+}
+
+export interface getUserResponse {
+	status: string,
+	code: number,
+	username?: string,
+	email?: string
+}

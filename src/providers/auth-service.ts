@@ -26,7 +26,11 @@ export class AuthService {
 	}
 
 	public getUser() {
-		return this.storage.get('token');
+		return Observable.create((observer: Observer<boolean>) => {
+			this.storage.get('token').then(token => {
+				this.socket.emit('get-user', {token: token});
+			});
+		});
 	}
 
 	public register(credentials: UserRegisterRequest) {

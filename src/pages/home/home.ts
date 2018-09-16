@@ -10,11 +10,13 @@ import { CreatelistPage } from '../createlist/createlist';
 })
 export class HomePage {
 	constructor(private nav: NavController, private auth: AuthService) {
-		this.auth.getUser().then(user => {
+		this.auth.getUser().subscribe(res => {
+
+		});/*.then(user => {
 			if (!user) {
 				this.nav.setRoot('LoginPage');
 			}
-		});
+		});*/
 	}
 
 	public createList() {
