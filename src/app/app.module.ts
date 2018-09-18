@@ -8,19 +8,17 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { AuthService } from "../providers/auth-service";
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-import { HomePage } from "../pages/home/home";
-import { ListPage } from "../pages/list/list";
-import { CreatelistPage } from "../pages/createlist/createlist";
-import { ProfilePage } from "../pages/profile/profile";
+import { LoginPage } from '../pages/login/login';
+import { ProfilePage } from '../pages/profile/profile';
+import { CreatelistPage } from '../pages/createlist/createlist';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
 	declarations: [
 		MyApp,
-		HomePage,
-		ListPage,
-		CreatelistPage,
-		ProfilePage
+		LoginPage,
+		ProfilePage,
+		CreatelistPage
 	],
 	imports: [
 		BrowserModule,
@@ -31,16 +29,15 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 	bootstrap: [IonicApp],
 	entryComponents: [
 		MyApp,
-		HomePage,
-		ListPage,
-		CreatelistPage,
-		ProfilePage
+		LoginPage,
+		ProfilePage,
+		CreatelistPage
 	],
 	providers: [
 		StatusBar,
 		SplashScreen,
-		{ provide: ErrorHandler, useClass: IonicErrorHandler },
 		AuthService,
+		{ provide: ErrorHandler, useClass: IonicErrorHandler }
 	]
 })
 export class AppModule { }
