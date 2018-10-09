@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { ListPage } from "../pages/list/list";
 import { LoginPage } from '../pages/login/login';
+import { ProfilePage } from '../pages/profile/profile';
 
 @Component({
 	templateUrl: 'app.html'
@@ -25,5 +26,10 @@ export class MyApp {
 	public openList() {
 		this.nav.push(ListPage);
 	}
+
+	public openProfile() {
+		this.nav.push(ProfilePage);
+	}
+
 }
 
