@@ -21,10 +21,6 @@ export class ProfilePage {
     email: "",
     username: ""
   };
-  title = 'Tour of Heroes';
-	public createList() {
-	  console.log(this.user, "bite")
-	}
 
   constructor(public navCtrl: NavController, public navParams: NavParams,  private auth: AuthService) {
     this.auth.getUser().subscribe((res: UserToken) => {
