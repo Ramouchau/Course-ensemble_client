@@ -5,8 +5,8 @@ export interface ClientItem {
 }
 
 export interface ClientList {
-	id: number
-	name: string
+	id?: number
+	name?: string
 	items?: ClientItem[]
 }
 
@@ -19,6 +19,7 @@ export interface GetAllListResponce {
 }
 
 export interface GetListRequest {
+	token: string,
 	idList: number
 }
 
