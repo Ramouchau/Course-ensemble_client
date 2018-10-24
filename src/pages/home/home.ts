@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import { NavController, IonicPage, ModalController } from 'ionic-angular';
 import { AuthService } from "../../providers/auth-service";
 import { CreatelistPage } from '../createlist/createlist';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
@@ -12,7 +12,7 @@ import { UserToken } from '../../interfaces/auth-socket-interfaces';
 export class HomePage {
 	public user: UserToken;
 
-	constructor(private nav: NavController, private auth: AuthService) {
+	constructor(private nav: NavController, private auth: AuthService, public modalCtrl: ModalController) {
 		this.auth.getUser().subscribe((res: UserToken) => {
 			this.user = res;
 			console.log(this.user);

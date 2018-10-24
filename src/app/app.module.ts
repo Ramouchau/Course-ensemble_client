@@ -11,6 +11,7 @@ import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { CreatelistPage } from '../pages/createlist/createlist';
+import { HomeService } from '../providers/home-service';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -37,6 +38,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		StatusBar,
 		SplashScreen,
 		AuthService,
+		HomeService,
 		{ provide: ErrorHandler, useClass: IonicErrorHandler }
 	]
 })

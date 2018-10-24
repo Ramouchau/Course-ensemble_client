@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
-	private user: UserToken
+	public user: UserToken
 	constructor(private socket: Socket, private storage: Storage) { }
 
 	public login(credentials) {
