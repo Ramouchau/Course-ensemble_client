@@ -25,8 +25,6 @@ export class GetListPage {
   {
       this.actList = navParams.get("list");
       this.idList = navParams.get("id");
-      console.log(this.actList, "this.actList");
-      console.log(this.idList, "this.idList");
   }
 
   async ionViewDidLoad() {
@@ -38,7 +36,7 @@ export class GetListPage {
                   this.nav.setRoot("HomePage");
                   this.nav.popToRoot();
               }*/
-              console.log(res);
+              console.log(res, '<--');
           }, err => {
               this.showError(err);
           });
