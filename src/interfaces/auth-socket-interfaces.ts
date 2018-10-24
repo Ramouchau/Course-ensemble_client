@@ -19,9 +19,9 @@ export interface UserLoginResponse {
 }
 
 export interface UserToken {
-	id: number,
-	email: string,
-	username: string,
+	id: number
+	email: string
+	username: string
 }
 
 export interface UserLoginRequest {
