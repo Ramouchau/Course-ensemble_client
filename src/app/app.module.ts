@@ -11,6 +11,9 @@ import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { CreatelistPage } from '../pages/createlist/createlist';
+import {ListService} from "../providers/list-service";
+import {ListPage} from "../pages/list/list";
+import {GetListPage} from "../pages/get-list/get-list";
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -18,7 +21,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		MyApp,
 		LoginPage,
 		ProfilePage,
-		CreatelistPage
+		CreatelistPage,
+		ListPage,
+		GetListPage
 	],
 	imports: [
 		BrowserModule,
@@ -31,12 +36,15 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		MyApp,
 		LoginPage,
 		ProfilePage,
-		CreatelistPage
+		CreatelistPage,
+		ListPage,
+		GetListPage
 	],
 	providers: [
 		StatusBar,
 		SplashScreen,
 		AuthService,
+		ListService,
 		{ provide: ErrorHandler, useClass: IonicErrorHandler }
 	]
 })

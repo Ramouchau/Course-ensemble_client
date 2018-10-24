@@ -21,5 +21,12 @@
 
 
 <ion-content padding>
+	<form (ngSubmit)="createList()">
+		<ion-item>
+			<ion-label>Nom de la liste</ion-label>
+			<ion-input type="text" [(ngModel)]="list.name" name="nom"></ion-input>
+		</ion-item>
+		<button ion-button type="submit" block>Créer liste</button>
+	</form>
 
 </ion-content>
