@@ -1,4 +1,5 @@
 export interface ClientItem {
+	id?:number
 	name: string
 	quantity?: number
 	status?: number
@@ -53,6 +54,7 @@ export interface addUserToListResponce {
 }
 
 export interface addItemToListRequest {
+	token: string
 	idList: number
 	item: ClientItem
 }
@@ -60,6 +62,7 @@ export interface addItemToListRequest {
 export interface addItemToListResponce {
 	status: string
 	code: number
+	list: ClientItem[];
 }
 
 export interface updateItemRequest {
