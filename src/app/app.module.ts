@@ -14,6 +14,7 @@ import { CreatelistPage } from '../pages/createlist/createlist';
 import {ListService} from "../providers/list-service";
 import {ListPage} from "../pages/list/list";
 import {GetListPage} from "../pages/get-list/get-list";
+import {AddItemModalPage} from "../pages/add-item-modal/add-item-modal";
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -23,7 +24,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		ProfilePage,
 		CreatelistPage,
 		ListPage,
-		GetListPage
+		GetListPage,
+		AddItemModalPage
 	],
 	imports: [
 		BrowserModule,
@@ -38,7 +40,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		ProfilePage,
 		CreatelistPage,
 		ListPage,
-		GetListPage
+		GetListPage,
+		AddItemModalPage
 	],
 	providers: [
 		StatusBar,

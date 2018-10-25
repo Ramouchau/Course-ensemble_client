@@ -7,12 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>get-list</ion-title>
+    <ion-title>Edition de la liste : {{list.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <form>
+    <ion-item>
+      <ion-label stacked>Nom</ion-label>
+      <ion-input type="text" [(ngModel)]="list.name" name="name"></ion-input>
+    </ion-item>
+    <ion-card>
+      <ion-card-header>
+        Listes de courses
+        <ion-icon style="float:right" name="add" (click)="addItem()"></ion-icon>
+      </ion-card-header>
+
+      <ion-list>
+        <button ion-item *ngFor="let item of list.items" (click)="itemSelected(item)">
+          {{ item.name }}
+        </button>
+      </ion-list>
+    </ion-card>
+  </form>
+
 
 </ion-content>

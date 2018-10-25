@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavOptions, NavParams} from 'ionic-angular';
-import {GetListRequest} from "../../interfaces/list-interfaces";
+import {AlertController, IonicPage, ModalController, NavController, NavOptions, NavParams} from 'ionic-angular';
+import {addItemToListRequest, ClientItem, ClientList, GetListRequest} from "../../interfaces/list-interfaces";
 import {ListService} from "../../providers/list-service";
 import {Storage} from "@ionic/storage";
+import {AddItemModalPage} from "../add-item-modal/add-item-modal";
 
 /**
  * Generated class for the GetListPage page.
@@ -20,23 +21,55 @@ export class GetListPage {
 
     public actList = null;
     public idList = null;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController)
+    private list: ClientList = {};
+  constructor(public navCtrl: NavController, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
   {
       this.actList = navParams.get("list");
       this.idList = navParams.get("id");
   }
-
+  async addItem()
+  {
+      let addItemModal = this.modalCtrl.create(AddItemModalPage, {});
+      addItemModal.onDidDismiss(data => {
+          if (data.item)
+          {
+              this.list.items.push(data.item);
+              let addItemRequest : addItemToListRequest = {token: await this.storage.get('token'), idList : this.idList};
+              this.ls.getOneListById(listRequest).subscribe(res => {
+                  console.log(res, '<--');
+                  this.list = res.list;
+                  let item : ClientItem = {
+                      name: "Test 1",
+                      quantity: 5,
+                      status: 0
+                  }
+                  this.list.items.push(item)
+                  console.log(this.list.items, "<===");
+              }, err => {
+                  this.showError(err);
+              });
+          }
+      });
+      addItemModal.present();
+  }
+  public itemSelected(item)
+  {
+      console.log(item);
+  }
   async ionViewDidLoad() {
       if (this.actList == null)
       {
           let listRequest : GetListRequest = {token: await this.storage.get('token'), idList : this.idList};
           this.ls.getOneListById(listRequest).subscribe(res => {
-              /*if (res) {
-                  this.nav.setRoot("HomePage");
-                  this.nav.popToRoot();
-              }*/
               console.log(res, '<--');
+              this.list = res.list;
+              let item : ClientItem = {
+                  name: "Test 1",
+                  quantity: 5,
+                  status: 0
+              }
+              this.list.items.push(item)
+              console.log(this.list.items, "<===");
           }, err => {
               this.showError(err);
           });
