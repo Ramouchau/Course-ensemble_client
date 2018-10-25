@@ -9,7 +9,9 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
-	private user: UserToken
+	public user: UserToken
+	public token: string
+
 	constructor(private socket: Socket, private storage: Storage) { }
 
 	public login(credentials) {
@@ -29,18 +31,21 @@ export class AuthService {
 	public getUser() {
 		return Observable.create((observer: Observer<UserToken>) => {
 			if (this.user){
-				observer.next(this.user);
-				observer.complete();
+				console.log(this.user)
+				observer.next(this.user)
+				observer.complete()
 			}
 
-			this.storage.get('token').then(token => {
-				this.socket.emit('get-user', {token: token});
+			this.storage.get('token').then(storageToken => {
+				this.socket.emit('get-user', {token: storageToken})
 				this.socket.fromEventOnce<GetUserResponse>("get-user").then(res => {
 					if (res.code != 200)
-						observer.error(res.status);
+						observer.error(res.status)
 
-					observer.next(res.user);
-					observer.complete();
+					this.token = storageToken
+					this.user = res.user
+					observer.next(res.user)
+					observer.complete()
 				});
 			});
 		});

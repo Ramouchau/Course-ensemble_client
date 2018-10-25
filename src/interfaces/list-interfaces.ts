@@ -11,7 +11,9 @@ export interface ClientList {
 	items?: ClientItem[]
 }
 
-export interface GetAllListRequest {}
+export interface GetAllListRequest {
+	token: string
+}
 
 export interface GetAllListResponce {
 	status: string
@@ -72,12 +74,3 @@ export interface updateItemResponce {
 	status: string,
 	code: number
 }
-
-/*export interface updateItemStatusRequest {
-	idItem: number
-}
-
-export interface updateItemstatusResponce {
-	status: string,
-	code: number
-}*/

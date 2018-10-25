@@ -18,11 +18,15 @@
 
 </ion-header>
 
-
-<ion-menu [content]="mycontent">
-    <ion-content>
-        <ion-list>
-            <p>some menu content, could be list items</p>
-        </ion-list>
-    </ion-content>
-</ion-menu>
+<ion-content padding>
+	<ion-item *ngFor="let list of lists">
+    <ion-card>
+			<ion-card-header>
+				Card Header
+			</ion-card-header>
+			<ion-card-content>
+				{{list.name}}
+			</ion-card-content>
+		</ion-card>
+  </ion-item>
+</ion-content>
