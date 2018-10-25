@@ -23,12 +23,7 @@ export class ProfilePage {
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams,  private auth: AuthService) {
-    this.auth.getUser().subscribe((res: UserToken) => {
-			this.user = res;
-			console.log(this.user);
-		}, (err: string) => {
-        console.error("mdr tu t'es fait déco");
-    });
+		this.user = this.auth.user
   }
 
   ionViewDidLoad() {

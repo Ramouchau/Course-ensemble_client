@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavOptions, NavParams} from 'ionic-angular';
 import {ClientList, CreateListRequest, CreateListResponse} from "../../interfaces/list-interfaces";
 import {ListService} from "../../providers/list-service";
-import { Storage } from '@ionic/storage';
 import {GetListPage} from "../get-list/get-list";
+import { AuthService } from '../../providers/auth-service';
 
 /**
  * Generated class for the CreatelistPage page.
@@ -19,16 +19,16 @@ import {GetListPage} from "../get-list/get-list";
 })
 
 export class CreatelistPage {
-  list: ClientList = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController) {
-  }
+	list: ClientList = {};
 
-  ionViewDidLoad() {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public ls: ListService, private alertCtrl: AlertController, private auth: AuthService) {}
+
+  public ionViewDidLoad() {
     console.log('ionViewDidLoad CreatelistPage');
-  }
-  async createList() {
-    console.log(this.list);
-    let listRequest : CreateListRequest = {token: await this.storage.get('token'), listName : this.list.name};
+	}
+
+  public createList() {
+    let listRequest : CreateListRequest = {token: this.auth.token, listName : this.list.name};
     this.ls.createList(listRequest).subscribe((res: CreateListResponse) => {
 				this.navCtrl.pop()
         this.navCtrl.push(GetListPage, {
@@ -40,7 +40,6 @@ export class CreatelistPage {
       });
   }
     private showError(text) {
-
         let alert = this.alertCtrl.create({
             title: 'Fail',
             subTitle: text,
