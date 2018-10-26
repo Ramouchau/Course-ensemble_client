@@ -5,6 +5,7 @@ import { CreatelistPage } from '../createlist/createlist';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
 import { ListService } from '../../providers/list-service';
 import { ClientList, GetAllListResponce } from '../../interfaces/list-interfaces';
+import {GetListPage} from "../get-list/get-list";
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ export class HomePage {
 		this.auth.getUser().subscribe((user: UserToken) => {
 			this.listService.getAllList({ token: this.auth.token}).subscribe((lists: GetAllListResponce) => {
 				this.lists = lists.lists
+				console.log(this.lists);
 			}, (err: string) => {
 				console.log(err)
 			})
@@ -25,7 +27,13 @@ export class HomePage {
 			this.nav.setRoot('LoginPage');
 		});
 	}
-
+	public openList(list)
+	{
+        this.nav.push(GetListPage, {
+            list: null,
+            id: list.id
+        })
+	}
 	public createList() {
 		this.nav.push(CreatelistPage)
 	}

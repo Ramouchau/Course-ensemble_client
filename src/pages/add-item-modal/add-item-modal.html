@@ -17,10 +17,14 @@
       <ion-label stacked>Nom article</ion-label>
       <ion-input [(ngModel)]="item.name" type="text" required></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label stacked>Quantité</ion-label>
-      <ion-input [(ngModel)]="item.quantity" type="number"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label>Quantité</ion-label>
+          <ion-input [(ngModel)]="item.quantity" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Déjà acheté</ion-label>
+          <ion-checkbox [(ngModel)]="checked"></ion-checkbox>
+        </ion-item>
     <button ion-button type="submit" block (click)="add()">Ajouter</button>
   </ion-list>
 </ion-content>

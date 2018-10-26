@@ -16,7 +16,8 @@ import {ClientItem} from "../../interfaces/list-interfaces";
 })
 export class AddItemModalPage {
 
-  item: ClientItem = {name:"", quantity:1}
+  item: ClientItem = {name:"", quantity:1, status:0}
+  checked: false;
   constructor( public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
     console.log(params);
   }
@@ -27,9 +28,13 @@ export class AddItemModalPage {
     dismiss() {
         this.viewCtrl.dismiss();
     }
+    onChange(value)
+    {
+      console.log(value)
+    }
     add()
     {
-      console.log("add <===")
+      this.item.status = this.checked ? 1 : 0;
       this.viewCtrl.dismiss({item: this.item})
     }
 }
