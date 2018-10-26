@@ -37,7 +37,6 @@ export class GetListPage {
               this.list.items.push(data.item);
               let addItemRequest : addItemToListRequest = {token: this.auth.token, idList : this.idList, item: data.item};
               this.ls.addItemInList(addItemRequest).subscribe(res => {
-                 console.log(res);
                  this.list = data.list;
               }, err => {
                   this.showError(err);
@@ -55,15 +54,7 @@ export class GetListPage {
       {
           let listRequest : GetListRequest = {token: await this.storage.get('token'), idList : this.idList};
           this.ls.getOneListById(listRequest).subscribe(res => {
-              console.log(res, '<--');
               this.list = res.list;
-              let item : ClientItem = {
-                  name: "Test 1",
-                  quantity: 5,
-                  status: 0
-              }
-              this.list.items.push(item)
-              console.log(this.list.items, "<===");
           }, err => {
               this.showError(err);
           });

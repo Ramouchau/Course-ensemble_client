@@ -19,7 +19,7 @@ export class AddItemModalPage {
   item: ClientItem = {name:"", quantity:1, status:0}
   checked: false;
   constructor( public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
-    console.log(params);
+
   }
 
   ionViewDidLoad() {
@@ -27,10 +27,6 @@ export class AddItemModalPage {
   }
     dismiss() {
         this.viewCtrl.dismiss();
-    }
-    onChange(value)
-    {
-      console.log(value)
     }
     add()
     {
