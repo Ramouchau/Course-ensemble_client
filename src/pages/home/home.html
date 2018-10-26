@@ -20,7 +20,7 @@
 
 <ion-content padding>
 	<ion-item *ngFor="let list of lists">
-    <ion-card>
+    <ion-card (click)="openList(list)">
 			<ion-card-header>
 				Card Header
 			</ion-card-header>

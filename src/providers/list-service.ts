@@ -6,7 +6,14 @@ import { Storage } from '@ionic/storage';
 import { UserRegisterRequest, UserLoginResponse, UserRegisterResponse, GetUserResponse, UserToken } from '../interfaces/auth-socket-interfaces'
 
 import 'rxjs/add/operator/map';
-import { CreateListRequest, CreateListResponse, GetListRequest, GetAllListRequest, GetAllListResponce, GetListRequest } from "../interfaces/list-interfaces";
+import {
+    addItemToListRequest,
+    CreateListRequest,
+    CreateListResponse,
+    GetAllListRequest,
+    GetAllListResponce,
+    GetListRequest
+} from "../interfaces/list-interfaces";
 
 @Injectable()
 export class ListService {
@@ -48,7 +55,7 @@ public getOneListById(list: GetListRequest) {
 		})
 	}
 
- 
+
     public addItemInList(item: addItemToListRequest) {
         return Observable.create(observer => {
             this.socket.emit('add-item-to-list', item)
