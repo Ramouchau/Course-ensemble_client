@@ -25,6 +25,6 @@
           <ion-label>Déjà acheté</ion-label>
           <ion-checkbox [(ngModel)]="checked"></ion-checkbox>
         </ion-item>
-    <button ion-button type="submit" block (click)="add()">Ajouter</button>
+    <button ion-button type="submit" block (click)="add()">{{edit ? "Modifier" : "Ajouter"}}</button>
   </ion-list>
 </ion-content>

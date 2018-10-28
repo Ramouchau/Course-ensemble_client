@@ -31,7 +31,7 @@
       <ion-list>
         <ion-item *ngFor="let item of list.items;let i = index">
           <ion-icon id="buy{{i}}" item-start appDebounceClick (debounceClick)="changeStateItem(i)" [debounceTime]="500" [name]="item.status == 1 ? 'checkbox' : 'checkbox-outline'"></ion-icon>
-          <button ion-item>
+          <button ion-item (click)="editItem(i)">
               {{item.name}}
             </button>
             <ion-icon item-end (click)="test()" name="trash"></ion-icon>
