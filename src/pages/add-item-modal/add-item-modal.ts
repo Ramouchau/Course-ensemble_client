@@ -17,9 +17,19 @@ import {ClientItem} from "../../interfaces/list-interfaces";
 export class AddItemModalPage {
 
   item: ClientItem = {name:"", quantity:1, status:0}
-  checked: false;
+  checked: boolean = false;
+  private edit = false;
   constructor( public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
-
+      if (params.get("item") == null)
+      {
+        this.item = {name:"", quantity:1, status:0};
+      }
+      else
+      {
+        this.item = params.get("item");
+        this.checked = this.item.status == 1;
+        this.edit = true;
+      }
   }
 
   ionViewDidLoad() {
@@ -31,6 +41,6 @@ export class AddItemModalPage {
     add()
     {
       this.item.status = this.checked ? 1 : 0;
-      this.viewCtrl.dismiss({item: this.item})
+      this.viewCtrl.dismiss({item: this.item, edit: this.edit})
     }
 }

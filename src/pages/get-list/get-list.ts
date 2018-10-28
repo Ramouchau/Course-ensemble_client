@@ -34,6 +34,22 @@ export class GetListPage {
       this.actList = navParams.get("list");
       this.idList = navParams.get("id");
   }
+  public editItem(item)
+  {
+      console.log("openEditModal")
+      let editItemModal = this.modalCtrl.create(AddItemModalPage, {item: this.list.items[item]});
+      editItemModal.onDidDismiss(data => {
+          if (data && data.item) {
+              let listRequest: updateItemRequest = {token: this.auth.token, idItem: data.item.id, item: data.item};
+              this.ls.updateItem(listRequest).subscribe(res => {
+                  console.log(res);
+              }, err => {
+                  this.showError(err);
+              });
+          }
+      });
+      editItemModal.present();
+  }
   public changeStateItem(item)
   {
       this.list.items[item].status = this.list.items[item].status == 1 ? 0 : 1;
@@ -50,13 +66,19 @@ export class GetListPage {
       addItemModal.onDidDismiss(data => {
           if (data && data.item)
           {
-              this.list.items.push(data.item);
-              let addItemRequest : addItemToListRequest = {token: this.auth.token, idList : this.idList, item: data.item};
-              this.ls.addItemInList(addItemRequest).subscribe(res => {
-                 this.list = data.list;
-              }, err => {
-                  this.showError(err);
-              });
+              if (data.edit == false) {
+                  this.list.items.push(data.item);
+                  let addItemRequest: addItemToListRequest = {
+                      token: this.auth.token,
+                      idList: this.idList,
+                      item: data.item
+                  };
+                  this.ls.addItemInList(addItemRequest).subscribe(res => {
+                      this.list = data.list;
+                  }, err => {
+                      this.showError(err);
+                  });
+              }
           }
       });
       addItemModal.present();
