@@ -75,3 +75,13 @@ export interface updateItemResponce {
 	status: string,
 	code: number
 }
+
+export interface deleteItemRequest {
+    token: string;
+    idItem: number;
+}
+
+export interface deleteItemResponce {
+    status: string;
+    code: number;
+}

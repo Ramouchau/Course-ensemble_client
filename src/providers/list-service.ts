@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import {
     addItemToListRequest,
     CreateListRequest,
-    CreateListResponse,
+    CreateListResponse, deleteItemRequest, deleteItemResponce,
     GetAllListRequest,
     GetAllListResponce,
     GetListRequest, updateItemRequest, updateItemResponce
@@ -72,6 +72,17 @@ public getOneListById(list: GetListRequest) {
         return Observable.create(observer => {
             this.socket.emit('update-item', item)
             this.socket.fromEventOnce<updateItemResponce>("update-item").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public deleteItem(itemRequest: deleteItemRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('delete-item', itemRequest)
+            this.socket.fromEventOnce<deleteItemResponce>("delete-item").then(res => {
                 if (res.code != 200)
                     observer.error(res.status);
                 observer.next(res);
