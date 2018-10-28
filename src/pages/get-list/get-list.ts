@@ -3,7 +3,7 @@ import {AlertController, IonicPage, ModalController, NavController, NavOptions, 
 import {
     addItemToListRequest,
     ClientItem,
-    ClientList,
+    ClientList, deleteItemRequest,
     GetListRequest,
     updateItemRequest
 } from "../../interfaces/list-interfaces";
@@ -49,6 +49,16 @@ export class GetListPage {
           }
       });
       editItemModal.present();
+  }
+  public deleteItem(item)
+  {
+      let deleteRequest : deleteItemRequest = {token: this.auth.token, idItem : this.list.items[item].id};
+      this.ls.deleteItem(deleteRequest).subscribe(res => {
+          console.log(res);
+          this.list.items.splice(item, 1);
+      }, err => {
+          this.showError(err);
+      });
   }
   public changeStateItem(item)
   {
