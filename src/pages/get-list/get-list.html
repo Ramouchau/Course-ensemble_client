@@ -22,14 +22,20 @@
     </ion-item>
     <ion-card>
       <ion-card-header>
+        <ion-item>
         Listes de courses
-        <ion-icon style="float:right" name="add" (click)="addItem()"></ion-icon>
+          <ion-icon item-end style="float:right" name="add" (click)="addItem()"></ion-icon>
+        </ion-item>
       </ion-card-header>
 
       <ion-list>
-        <button ion-item *ngFor="let item of list.items" (click)="itemSelected(item)">
-          {{ item.name }}
-        </button>
+        <ion-item *ngFor="let item of list.items;let i = index">
+          <ion-icon id="buy{{i}}" item-start appDebounceClick (debounceClick)="changeStateItem(i)" [debounceTime]="500" [name]="item.status == 1 ? 'checkbox' : 'checkbox-outline'"></ion-icon>
+          <button ion-item>
+              {{item.name}}
+            </button>
+            <ion-icon item-end (click)="test()" name="trash"></ion-icon>
+        </ion-item>
       </ion-list>
     </ion-card>
   </form>
