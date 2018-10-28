@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, ModalController, NavController, NavOptions, NavParams} from 'ionic-angular';
-import {addItemToListRequest, ClientItem, ClientList, GetListRequest} from "../../interfaces/list-interfaces";
+import {
+    addItemToListRequest,
+    ClientItem,
+    ClientList,
+    GetListRequest,
+    updateItemRequest
+} from "../../interfaces/list-interfaces";
 import {ListService} from "../../providers/list-service";
 import {Storage} from "@ionic/storage";
 import {AddItemModalPage} from "../add-item-modal/add-item-modal";
@@ -28,6 +34,16 @@ export class GetListPage {
       this.actList = navParams.get("list");
       this.idList = navParams.get("id");
   }
+  public changeStateItem(item)
+  {
+      this.list.items[item].status = this.list.items[item].status == 1 ? 0 : 1;
+      let listRequest : updateItemRequest = {token: this.auth.token, idItem : this.list.items[item].id, item: this.list.items[item]};
+      this.ls.updateItem(listRequest).subscribe(res => {
+          console.log(res);
+      }, err => {
+          this.showError(err);
+      });
+  }
   async addItem()
   {
       let addItemModal = this.modalCtrl.create(AddItemModalPage, {});
@@ -44,10 +60,6 @@ export class GetListPage {
           }
       });
       addItemModal.present();
-  }
-  public itemSelected(item)
-  {
-      console.log(item);
   }
   async ionViewDidLoad() {
       if (this.actList == null)
