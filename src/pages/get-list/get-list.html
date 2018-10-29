@@ -5,11 +5,14 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Edition de la liste : {{list.name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
@@ -18,7 +21,7 @@
   <form>
     <ion-item>
       <ion-label stacked>Nom</ion-label>
-      <ion-input type="text" [(ngModel)]="list.name" name="name"></ion-input>
+      <ion-input type="text" [value]="list.name" [formControl]="nameListController" name="name"></ion-input>
     </ion-item>
     <ion-card>
       <ion-card-header>
@@ -32,7 +35,12 @@
         <ion-item *ngFor="let item of list.items;let i = index">
           <ion-icon id="buy{{i}}" item-start appDebounceClick (debounceClick)="changeStateItem(i)" [debounceTime]="500" [name]="item.status == 1 ? 'checkbox' : 'checkbox-outline'"></ion-icon>
           <button ion-item (click)="editItem(i)">
-              {{item.name}}
+            <ion-row>
+              {{prepareQuantity(item.quantity)}} - {{item.name}}
+            </ion-row>
+            <ion-row>
+              <small>Ajouté par TEST</small>
+            </ion-row>
             </button>
             <ion-icon item-end (click)="deleteItem(i)" name="trash"></ion-icon>
         </ion-item>

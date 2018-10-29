@@ -85,3 +85,14 @@ export interface deleteItemResponce {
     status: string;
     code: number;
 }
+
+
+export interface UpdateListRequest {
+    token: string;
+    idList: number;
+    list: ClientList
+}
+export interface UpdateListResponse {
+    status: string;
+    code: number;
+}

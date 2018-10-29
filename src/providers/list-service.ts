@@ -12,7 +12,7 @@ import {
     CreateListResponse, deleteItemRequest, deleteItemResponce,
     GetAllListRequest,
     GetAllListResponce,
-    GetListRequest, updateItemRequest, updateItemResponce
+    GetListRequest, updateItemRequest, updateItemResponce, UpdateListRequest, UpdateListResponse
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -72,6 +72,17 @@ public getOneListById(list: GetListRequest) {
         return Observable.create(observer => {
             this.socket.emit('update-item', item)
             this.socket.fromEventOnce<updateItemResponce>("update-item").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public updateList(list: UpdateListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('update-list', list)
+            this.socket.fromEventOnce<UpdateListResponse>("update-list").then(res => {
                 if (res.code != 200)
                     observer.error(res.status);
                 observer.next(res);

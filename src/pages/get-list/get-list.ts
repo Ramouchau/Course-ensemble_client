@@ -5,12 +5,14 @@ import {
     ClientItem,
     ClientList, deleteItemRequest,
     GetListRequest,
-    updateItemRequest
+    updateItemRequest, UpdateListRequest
 } from "../../interfaces/list-interfaces";
 import {ListService} from "../../providers/list-service";
 import {Storage} from "@ionic/storage";
 import {AddItemModalPage} from "../add-item-modal/add-item-modal";
 import {AuthService} from "../../providers/auth-service";
+import {FormControl} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 /**
  * Generated class for the GetListPage page.
@@ -29,10 +31,30 @@ export class GetListPage {
     public actList = null;
     public idList = null;
     private list: ClientList = {};
+    private nameListController = new FormControl('');
+    private changeName$: Subscription;
   constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
   {
       this.actList = navParams.get("list");
       this.idList = navParams.get("id");
+      this.changeName$ = this.nameListController.valueChanges
+          .debounceTime(1000)
+          .subscribe(newValue =>
+          {
+              if (this.list.name == newValue)
+                  return;
+              this.list.name = newValue
+              let listRequest: UpdateListRequest = {token: this.auth.token, idList: this.list.id, list: this.list};
+              this.ls.updateList(listRequest).subscribe(res => {
+                  console.log(res);
+              }, err => {
+                  this.showError(err);
+              });
+          });
+  }
+  public updateName()
+  {
+
   }
   public editItem(item)
   {
@@ -49,6 +71,10 @@ export class GetListPage {
           }
       });
       editItemModal.present();
+  }
+  public prepareQuantity(qua)
+  {
+      return Number.isInteger(qua) ? ("x" + qua) : qua;
   }
   public deleteItem(item)
   {
@@ -114,5 +140,9 @@ export class GetListPage {
             buttons: ['OK']
         });
         alert.present(<NavOptions>prompt);
+    }
+
+    ngOnDestroy() {
+        this.changeName$.unsubscribe();
     }
 }
