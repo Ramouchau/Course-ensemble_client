@@ -52,13 +52,8 @@ export class GetListPage {
               });
           });
   }
-  public updateName()
-  {
-
-  }
   public editItem(item)
   {
-      console.log("openEditModal")
       let editItemModal = this.modalCtrl.create(AddItemModalPage, {item: this.list.items[item]});
       editItemModal.onDidDismiss(data => {
           if (data && data.item) {
@@ -74,13 +69,12 @@ export class GetListPage {
   }
   public prepareQuantity(qua)
   {
-      return Number.isInteger(qua) ? ("x" + qua) : qua;
+      return (parseInt(qua) == qua) ? ("x" + qua) : qua;
   }
   public deleteItem(item)
   {
       let deleteRequest : deleteItemRequest = {token: this.auth.token, idItem : this.list.items[item].id};
       this.ls.deleteItem(deleteRequest).subscribe(res => {
-          console.log(res);
           this.list.items.splice(item, 1);
       }, err => {
           this.showError(err);
