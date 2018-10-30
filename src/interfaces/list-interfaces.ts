@@ -1,3 +1,5 @@
+import {UserToken} from "./auth-socket-interfaces";
+
 export interface ClientItem {
 	id?:number
 	name: string
@@ -9,6 +11,8 @@ export interface ClientList {
 	id?: number
 	name?: string
 	items?: ClientItem[]
+	users?: UserToken[]
+	watchers?: UserToken[]
 }
 
 export interface GetAllListRequest {
@@ -41,16 +45,6 @@ export interface CreateListResponse {
 	status: string
 	code: number
 	idList?: number
-}
-
-export interface addUserToListRequest {
-	idList: number
-	idUser: number
-}
-
-export interface addUserToListResponce {
-	status: string
-	code: number
 }
 
 export interface addItemToListRequest {
@@ -96,3 +90,38 @@ export interface UpdateListResponse {
     status: string;
     code: number;
 }
+
+export interface searchUserRequest {
+    token: string;
+    research: string;
+}
+
+export interface searchUserResponce {
+    status: string;
+    code: number;
+    users?: UserToken[];
+}
+
+
+export interface addUserToListRequest {
+    token: string;
+    idList: number;
+    idUser: number;
+}
+
+export interface addUserToListResponce {
+    status: string;
+    code: number;
+}
+
+export interface addWatcherToListRequest {
+    token: string;
+    idList: number;
+    idUser: number;
+}
+
+export interface addWatcherToListResponce {
+    status: string;
+    code: number;
+}
+

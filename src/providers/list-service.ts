@@ -8,11 +8,23 @@ import { UserRegisterRequest, UserLoginResponse, UserRegisterResponse, GetUserRe
 import 'rxjs/add/operator/map';
 import {
     addItemToListRequest,
+    addUserToListRequest,
+    addUserToListResponce,
+    addWatcherToListRequest,
+    addWatcherToListResponce,
     CreateListRequest,
-    CreateListResponse, deleteItemRequest, deleteItemResponce,
+    CreateListResponse,
+    deleteItemRequest,
+    deleteItemResponce,
     GetAllListRequest,
     GetAllListResponce,
-    GetListRequest, updateItemRequest, updateItemResponce, UpdateListRequest, UpdateListResponse
+    GetListRequest,
+    searchUserRequest,
+    searchUserResponce,
+    updateItemRequest,
+    updateItemResponce,
+    UpdateListRequest,
+    UpdateListResponse
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -94,6 +106,62 @@ public getOneListById(list: GetListRequest) {
         return Observable.create(observer => {
             this.socket.emit('delete-item', itemRequest)
             this.socket.fromEventOnce<deleteItemResponce>("delete-item").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+
+    public searchUser(searchRequest: searchUserRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('search-user', searchRequest)
+            this.socket.fromEventOnce<searchUserResponce>("search-user").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public addUserToList(addUser: addUserToListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('add-user-to-list', addUser)
+            this.socket.fromEventOnce<addUserToListResponce>("add-user-to-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public addWatcherToList(addWatcher: addWatcherToListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('add-watcher-to-list', addWatcher)
+            this.socket.fromEventOnce<addWatcherToListResponce>("add-watcher-to-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public delUserToList(delUser: addUserToListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('del-user-to-list', delUser)
+            this.socket.fromEventOnce<addUserToListResponce>("del-user-to-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public delWatcherToList(delWatcher: addWatcherToListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('del-watcher-to-list', delWatcher)
+            this.socket.fromEventOnce<addWatcherToListResponce>("del-watcher-to-list").then(res => {
                 if (res.code != 200)
                     observer.error(res.status);
                 observer.next(res);

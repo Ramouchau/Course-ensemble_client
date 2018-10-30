@@ -22,6 +22,7 @@ export interface UserToken {
 	id: number
 	email: string
 	username: string
+	rights?: string
 }
 
 export interface UserLoginRequest {

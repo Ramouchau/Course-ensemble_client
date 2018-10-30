@@ -16,6 +16,7 @@ import {ListPage} from "../pages/list/list";
 import {GetListPage} from "../pages/get-list/get-list";
 import {AddItemModalPage} from "../pages/add-item-modal/add-item-modal";
 import {DebounceClickDirective} from "../directives/DebounceClick";
+import {AddUserModalPage} from "../pages/add-user-modal/add-user-modal";
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -27,6 +28,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		ListPage,
 		GetListPage,
 		AddItemModalPage,
+		AddUserModalPage,
 		DebounceClickDirective
 	],
 	imports: [
@@ -43,7 +45,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		CreatelistPage,
 		ListPage,
 		GetListPage,
-		AddItemModalPage
+		AddItemModalPage,
+		AddUserModalPage
 	],
 	providers: [
 		StatusBar,
