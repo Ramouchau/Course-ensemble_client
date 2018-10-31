@@ -14,13 +14,11 @@ import { AddedToList } from '../interfaces/list-interfaces';
 export class NotificationsServiceProvider {
 
   constructor(private localNotifications: LocalNotifications, private socket: Socket) {
-    console.log('home page');
     this.socket.on("added-to", (data: AddedToList) => {
       this.localNotifications.schedule({
-        text: 'kir🅱️izia is a li🅱️tard',
+        text: data.by + " vous a ajouté à sa liste " + data.list.name + " !",
         led: 'FF0000',
       });
-      alert("on lmao");
     })
   }
 

@@ -22,7 +22,6 @@ export class HomePage {
 		this.auth.getUser().subscribe((user: UserToken) => {
 			this.listService.getAllList({ token: this.auth.token}).subscribe((lists: GetAllListResponce) => {
 				this.lists = lists.lists
-				console.log(this.lists);
 			}, (err: string) => {
 				console.log(err)
 			})
