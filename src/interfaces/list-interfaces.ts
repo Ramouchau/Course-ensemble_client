@@ -125,3 +125,12 @@ export interface addWatcherToListResponce {
     code: number;
 }
 
+export interface AddedToList {
+    by: string
+    list: ClientList
+}
+
+export interface DeletedFromList {
+    by: string
+    list: ClientList
+}

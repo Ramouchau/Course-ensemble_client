@@ -4,7 +4,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
-
 import { MyApp } from './app.component';
 import { AuthService } from "../providers/auth-service";
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
@@ -17,7 +16,10 @@ import {GetListPage} from "../pages/get-list/get-list";
 import {AddItemModalPage} from "../pages/add-item-modal/add-item-modal";
 import {DebounceClickDirective} from "../directives/DebounceClick";
 import {AddUserModalPage} from "../pages/add-user-modal/add-user-modal";
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { NotificationsServiceProvider } from '../providers/notifications-service';
+
+const config: SocketIoConfig = { url: 'http://e8c7d931.ngrok.io', options: {} };
 
 @NgModule({
 	declarations: [
@@ -53,7 +55,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		SplashScreen,
 		AuthService,
 		ListService,
-		{ provide: ErrorHandler, useClass: IonicErrorHandler }
+		LocalNotifications,
+    NotificationsServiceProvider,
+		{ provide: ErrorHandler, useClass: IonicErrorHandler },
 	]
 })
 export class AppModule { }
