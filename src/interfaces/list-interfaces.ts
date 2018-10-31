@@ -68,8 +68,11 @@ export interface updateItemRequest {
 }
 
 export interface updateItemResponce {
-	status: string,
-	code: number
+	status: string;
+	code: number;
+	item?: ClientItem;
+    user?: UserToken;
+    listName?: string;
 }
 
 export interface deleteItemRequest {
