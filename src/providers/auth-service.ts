@@ -67,6 +67,8 @@ export class AuthService {
 
 	public logout() {
 		return Observable.create(observer => {
+			this.user = null;
+			this.token = null;
 			this.storage.remove('token');
 			observer.next(true)
 		});
