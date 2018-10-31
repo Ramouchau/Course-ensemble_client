@@ -95,17 +95,18 @@ export class GetListPage {
           if (data && data.item)
           {
               if (data.edit == false) {
-                  this.list.items.push(data.item);
                   let addItemRequest: addItemToListRequest = {
                       token: this.auth.token,
                       idList: this.idList,
                       item: data.item
                   };
                   this.ls.addItemInList(addItemRequest).subscribe(res => {
-                      this.list = data.list;
+                      console.log(res)
                   }, err => {
                       this.showError(err);
                   });
+                  data.item.addBy = this.auth.getUser();
+                  this.list.items.push(data.item);
               }
           }
       });
