@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage, NavOptions } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 @IonicPage()
 @Component({
@@ -12,10 +13,13 @@ export class LoginPage {
 	loading: Loading;
 	registerCredentials = { email: '', password: '' };
 
-	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private splashScreen: SplashScreen) {
 		this.auth.getUser().subscribe((res: UserToken) => {
 			if (res)
 				this.nav.setRoot('HomePage');
+			else 
+				splashScreen.hide();
+
 		}, (err: string) => {
 		});
 	}
