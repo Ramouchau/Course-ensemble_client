@@ -31,7 +31,7 @@ export class GetListPage {
 
     public actList = null;
     public idList = null;
-    private list: ClientList = {};
+    private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}};
     private nameListController = new FormControl('');
     private changeName$: Subscription;
   constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
@@ -117,6 +117,8 @@ export class GetListPage {
           let listRequest : GetListRequest = {token: await this.storage.get('token'), idList : this.idList};
           this.ls.getOneListById(listRequest).subscribe(res => {
               this.list = res.list;
+              console.log(res.list);
+              console.log(res);
           }, err => {
               this.showError(err);
           });
@@ -142,7 +144,7 @@ export class GetListPage {
     {
         console.log("okokok")
     }
-    testAdd()
+    addUser()
     {
         let addUserModal = this.modalCtrl.create(AddUserModalPage, {users: this.list.users, watchers: this.list.watchers});
         addUserModal.onDidDismiss(data => {

@@ -16,13 +16,13 @@ import {ClientItem} from "../../interfaces/list-interfaces";
 })
 export class AddItemModalPage {
 
-  item: ClientItem = {name:"", quantity:1, status:0}
+  item: ClientItem = {name:"", quantity:"1", status:0}
   checked: boolean = false;
   private edit = false;
   constructor( public platform: Platform, public params: NavParams, public viewCtrl: ViewController) {
       if (params.get("item") == null)
       {
-        this.item = {name:"", quantity:1, status:0};
+        this.item = {name:"", quantity:"1", status:0};
       }
       else
       {
