@@ -14,14 +14,15 @@ export class LoginPage {
 	registerCredentials = { email: '', password: '' };
 
 	constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private splashScreen: SplashScreen) {
-		this.auth.getUser().subscribe((res: UserToken) => {
-			if (res)
-				this.nav.setRoot('HomePage');
-			else 
-				splashScreen.hide();
 
+		this.auth.getUser().subscribe((res: UserToken) => {
+			if (res) {
+				this.nav.setRoot('HomePage');
+				return;
+			}
 		}, (err: string) => {
-		});
+			this.splashScreen.hide();
+		});		
 	}
 
 	public createAccount() {
