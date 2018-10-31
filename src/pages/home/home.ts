@@ -8,6 +8,7 @@ import { ClientList, GetAllListResponce } from '../../interfaces/list-interfaces
 import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {LoginPage} from "../login/login";
 
 
 @IonicPage()
@@ -27,7 +28,7 @@ export class HomePage {
 				console.log(err)
 			})
 		}, (err: string) => {
-			this.nav.setRoot('LoginPage');
+			this.nav.setRoot(LoginPage);
 		});
 
 		splashScreen.hide();

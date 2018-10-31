@@ -19,7 +19,7 @@ import {AddUserModalPage} from "../pages/add-user-modal/add-user-modal";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NotificationsServiceProvider } from '../providers/notifications-service';
 
-const config: SocketIoConfig = { url: 'http://e8c7d931.ngrok.io', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
 
 @NgModule({
 	declarations: [
