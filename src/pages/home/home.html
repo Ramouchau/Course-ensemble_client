@@ -22,7 +22,7 @@
 	<ion-item *ngFor="let list of lists">
     <ion-card (click)="openList(list)">
 			<ion-card-header>
-				Card Header
+				Liste crée par {{list.owner}}
 			</ion-card-header>
 			<ion-card-content>
 				{{list.name}}
