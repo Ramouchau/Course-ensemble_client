@@ -6,3 +6,45 @@ page-home {
     background-color: #ff7c00;
   }
 }
+list-1-page .list-big-content .list-big ion-list .list-item .content-row {
+  align-items: center;
+}
+list-1-page .list-big-content .list-big ion-list .list-item .item-content {
+  align-content: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  align-self: stretch;
+}
+list-1-page .list-big-content .list-big ion-list .list-item .item-content .item-title {
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.avatar-image{
+  width: 42%;
+  margin-left: 11%;
+}
+.content-row{
+  margin: 10px;
+    border-radius: 2px;
+    width: calc(100% - 20px);
+    font-size: 1.4rem;
+    background: #fff;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.fleche{
+color: #440090;
+margin-left: 68%;
+margin-top: 9%;
+font-size: 1.6em;
+}
+.listTitle{
+  color: #440090;
+}
+.heroTitle{
+  text-align: center;
+  color:#440090;
+  font-size: 1.5em; 
+}
