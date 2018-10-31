@@ -24,7 +24,8 @@ import {
     updateItemRequest,
     updateItemResponce,
     UpdateListRequest,
-    UpdateListResponse
+    UpdateListResponse,
+    AddedToList
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -167,6 +168,14 @@ public getOneListById(list: GetListRequest) {
                 observer.next(res);
                 observer.complete();
             });
+        });
+    }
+
+    public initOnUserAddedToList() {
+        return Observable.create(observer => {
+            this.socket.on("added-to", (data: AddedToList) => {
+                observer.next(data);
+            })
         });
     }
 }

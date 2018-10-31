@@ -4,7 +4,7 @@ import { AuthService } from "../../providers/auth-service";
 import { CreatelistPage } from '../createlist/createlist';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
 import { ListService } from '../../providers/list-service';
-import { ClientList, GetAllListResponce } from '../../interfaces/list-interfaces';
+import { ClientList, GetAllListResponce, AddedToList } from '../../interfaces/list-interfaces';
 import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,6 +25,9 @@ export class HomePage {
 			}, (err: string) => {
 				console.log(err)
 			})
+			this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
+				this.lists.push(list.list);
+			});
 		}, (err: string) => {
 			this.nav.setRoot('LoginPage');
 		});
