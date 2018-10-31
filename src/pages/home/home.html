@@ -6,7 +6,7 @@
       </button>
 
     <ion-title>
-      Page Title
+      Course Ensemble
     </ion-title>
 
     <ion-buttons end>
@@ -18,15 +18,25 @@
 
 </ion-header>
 
-<ion-content padding>
-	<ion-item *ngFor="let list of lists">
-    <ion-card (click)="openList(list)">
-			<ion-card-header>
-				Card Header
-			</ion-card-header>
-			<ion-card-content>
-				{{list.name}}
-			</ion-card-content>
-		</ion-card>
-  </ion-item>
+<ion-content padding class="list-big-content">
+
+  <div class="list-big">
+    <h1 ion-title class="heroTitle" >Vos Listes</h1>
+    <ion-list>
+      <button class="list-item" ion-item *ngFor="let list of lists" (click)="openList(list)">
+        <ion-row padding class="content-row" >
+          <ion-col no-padding width-33 class="item-avatar">
+            <img class="avatar-image"  [src]="'/assets/imgs/cadie.svg'">
+          </ion-col>
+          <ion-col no-padding width-57 class="item-content">
+            <h3 class="item-title listTitle">{{list.name}}</h3>
+            <p class="item-description" rows="3">lorem</p>
+          </ion-col>
+          <ion-col no-padding width-10 class="item-icon">
+            <ion-icon name="arrow-forward" class="fleche"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+  </div>
 </ion-content>
