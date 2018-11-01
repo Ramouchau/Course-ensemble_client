@@ -120,8 +120,6 @@ export class GetListPage {
           let listRequest : GetListRequest = {token: await this.storage.get('token'), idList : this.idList};
           this.ls.getOneListById(listRequest).subscribe(res => {
               this.list = res.list;
-              console.log(res.list);
-              console.log(res);
               if (this.list.owner.id === this.auth.user.id) {
                   this.isOwner = true;
                   this.canEdit = true;
@@ -151,10 +149,6 @@ export class GetListPage {
         this.changeName$.unsubscribe();
     }
 
-    test()
-    {
-        console.log("okokok")
-    }
     addUser()
     {
         let addUserModal = this.modalCtrl.create(AddUserModalPage, {users: this.list.users, watchers: this.list.watchers});
