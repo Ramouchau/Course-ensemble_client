@@ -9,7 +9,7 @@ import {
     GetAllListResponce,
     AddedToList,
     updateItemRequest,
-    DeleteListRequest
+    DeleteListRequest, DeletedFromList
 } from '../../interfaces/list-interfaces';
 import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
@@ -35,6 +35,11 @@ export class HomePage {
 			this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
 				this.lists.push(list.list);
 			});
+
+			this.listService.initOnListDeleted().subscribe((list: DeletedFromList) => {
+				let index = this.lists.findIndex((l) => l.id === list.list.id)
+				this.lists.splice(index)
+			})
 		}, (err: string) => {
 			this.nav.setRoot(LoginPage);
 		});

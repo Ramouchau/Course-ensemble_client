@@ -143,6 +143,21 @@ export interface DeletedFromList {
     list: ClientList
 }
 
+export interface ItemAdded {
+	by: string
+	item: ClientItem
+}
+
+export interface ItemDeleted {
+	by: string
+	item: ClientItem
+}
+
+export interface ItemUpdated {
+	by: string
+	item: ClientItem
+}
+
 export interface DeleteListRequest {
     token: string;
     id: number;

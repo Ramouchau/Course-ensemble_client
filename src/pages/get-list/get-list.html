@@ -51,7 +51,7 @@
               {{prepareQuantity(item.quantity)}} - {{item.name}}
             </ion-row>
             <ion-row>
-              <small>Ajouté par {{item.addBy.username}}</small>
+              <small *ngIf="item.addBy">Ajouté par {{item.addBy.username}}</small>
             </ion-row>
             </button>
             <ion-icon *ngIf="canEdit" item-end (click)="deleteItem(i)" name="trash"></ion-icon>

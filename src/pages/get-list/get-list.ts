@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, ModalController, NavController, NavOptions, NavParams} from 'ionic-angular';
+import { AlertController, IonicPage, ModalController, NavController, NavOptions, NavParams } from 'ionic-angular';
 import {
-    addItemToListRequest, addUserToListRequest, addWatcherToListRequest,
-    ClientItem,
-    ClientList, deleteItemRequest,
-    GetListRequest, searchUserRequest,
-    updateItemRequest, UpdateListRequest
+	addItemToListRequest, addUserToListRequest, addWatcherToListRequest,
+	ClientItem,
+	ClientList, deleteItemRequest,
+	GetListRequest, searchUserRequest,
+	updateItemRequest, UpdateListRequest, ItemAdded, ItemDeleted
 } from "../../interfaces/list-interfaces";
-import {ListService} from "../../providers/list-service";
-import {Storage} from "@ionic/storage";
-import {AddItemModalPage} from "../add-item-modal/add-item-modal";
-import {AuthService} from "../../providers/auth-service";
-import {FormControl} from "@angular/forms";
-import {Subscription} from "rxjs";
-import {AddUserModalPage} from "../add-user-modal/add-user-modal";
+import { ListService } from "../../providers/list-service";
+import { Storage } from "@ionic/storage";
+import { AddItemModalPage } from "../add-item-modal/add-item-modal";
+import { AuthService } from "../../providers/auth-service";
+import { FormControl } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { AddUserModalPage } from "../add-user-modal/add-user-modal";
 
 /**
  * Generated class for the GetListPage page.
@@ -24,11 +24,10 @@ import {AddUserModalPage} from "../add-user-modal/add-user-modal";
 
 @IonicPage()
 @Component({
-  selector: 'page-get-list',
-  templateUrl: 'get-list.html',
+	selector: 'page-get-list',
+	templateUrl: 'get-list.html',
 })
 export class GetListPage {
-
     public actList = null;
     public idList = null;
     private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}, id: -1, name:""};
@@ -134,123 +133,128 @@ export class GetListPage {
               this.showError(err);
           });
       }
-  }
 
+		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
+			this.list.items.push(res.item);
+		});
 
-    private showError(text) {
+		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
+			let index = this.list.items.findIndex((i) => i.id === res.item.id)
+			this.list.items.splice(index)
+		})
 
-        let alert = this.alertCtrl.create({
-            title: 'Fail',
-            subTitle: text,
-            buttons: ['OK']
-        });
-        alert.present(<NavOptions>prompt);
-    }
+		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
+			let index = this.list.items.findIndex((i) => i.id === res.item.id)
+			this.list.items[index] = res.item
+		})
+	}
 
-    ngOnDestroy() {
-        this.changeName$.unsubscribe();
-    }
+	private showError(text) {
 
-    test()
-    {
-        console.log("okokok")
-    }
-    addUser()
-    {
-        let addUserModal = this.modalCtrl.create(AddUserModalPage, {users: this.list.users, watchers: this.list.watchers});
-        addUserModal.onDidDismiss(data => {
-            if (data) {
-                this.list.users = [];
-                this.list.watchers = [];
-                for (let user of data.users)
-                {
-                    if (user.rights == "edit") {
-                        this.list.users.push(user);
-                        if (data.usersSet.indexOf(user.id) == -1) {
-                            if (data.watchersSet.indexOf(user.id) != -1) {
-                                data.watchersSet.splice(data.watchersSet.indexOf(user.id));
-                                let addUserRequest: addWatcherToListRequest = {
-                                    token: this.auth.token,
-                                    idList: this.idList,
-                                    idUser: user.id
-                                };
-                                this.ls.delWatcherToList(addUserRequest).subscribe(res => {
-                                }, err => {
-                                    this.showError(err);
-                                });
-                            }
-                            let addUserRequest: addUserToListRequest = {
-                                token: this.auth.token,
-                                idList: this.idList,
-                                idUser: user.id
-                            };
-                            this.ls.addUserToList(addUserRequest).subscribe(res => {
-                            }, err => {
-                                this.showError(err);
-                            });
-                        }
-                        else
-                        {
-                            data.usersSet.splice(data.usersSet.indexOf(user.id));
-                        }
-                    }
-                    else {
-                        this.list.watchers.push(user);
-                        if (data.watchersSet.indexOf(user.id) == -1) {
-                            if (data.usersSet.indexOf(user.id) != -1) {
-                                data.usersSet.splice(data.usersSet.indexOf(user.id));
-                                let addUserRequest: addUserToListRequest = {
-                                    token: this.auth.token,
-                                    idList: this.idList,
-                                    idUser: user.id
-                                };
-                                this.ls.delUserToList(addUserRequest).subscribe(res => {
-                                }, err => {
-                                    this.showError(err);
-                                });
-                            }
-                            let addWatcherRequest: addWatcherToListRequest = {
-                                token: this.auth.token,
-                                idList: this.idList,
-                                idUser: user.id
-                            };
-                            this.ls.addWatcherToList(addWatcherRequest).subscribe(res => {
-                            }, err => {
-                                this.showError(err);
-                            });
-                        }
-                        else
-                        {
-                            data.watchersSet.splice(data.watchersSet.indexOf(user.id), 1);
-                        }
-                    }
-                }
-                data.usersSet.forEach((id) => {
-                    let addUserRequest: addUserToListRequest = {
-                        token: this.auth.token,
-                        idList: this.idList,
-                        idUser: id
-                    };
-                    this.ls.delUserToList(addUserRequest).subscribe(res => {
-                    }, err => {
-                        this.showError(err);
-                    });
-                });
-                data.watchersSet.forEach((id) => {
-                    let addUserRequest: addUserToListRequest = {
-                        token: this.auth.token,
-                        idList: this.idList,
-                        idUser: id
-                    };
-                    this.ls.delWatcherToList(addUserRequest).subscribe(res => {
+		let alert = this.alertCtrl.create({
+			title: 'Fail',
+			subTitle: text,
+			buttons: ['OK']
+		});
+		alert.present(<NavOptions>prompt);
+	}
 
-                    }, err => {
-                        this.showError(err);
-                    });
-                })
-            }
-        });
-        addUserModal.present();
+	ngOnDestroy() {
+		this.changeName$.unsubscribe();
+	}
 
-    }
+	addUser() {
+		let addUserModal = this.modalCtrl.create(AddUserModalPage, { users: this.list.users, watchers: this.list.watchers });
+		addUserModal.onDidDismiss(data => {
+			if (data) {
+				this.list.users = [];
+				this.list.watchers = [];
+				for (let user of data.users) {
+					if (user.rights == "edit") {
+						this.list.users.push(user);
+						if (data.usersSet.indexOf(user.id) == -1) {
+							if (data.watchersSet.indexOf(user.id) != -1) {
+								data.watchersSet.splice(data.watchersSet.indexOf(user.id));
+								let addUserRequest: addWatcherToListRequest = {
+									token: this.auth.token,
+									idList: this.idList,
+									idUser: user.id
+								};
+								this.ls.delWatcherToList(addUserRequest).subscribe(res => {
+								}, err => {
+									this.showError(err);
+								});
+							}
+							let addUserRequest: addUserToListRequest = {
+								token: this.auth.token,
+								idList: this.idList,
+								idUser: user.id
+							};
+							this.ls.addUserToList(addUserRequest).subscribe(res => {
+							}, err => {
+								this.showError(err);
+							});
+						}
+						else {
+							data.usersSet.splice(data.usersSet.indexOf(user.id));
+						}
+					}
+					else {
+						this.list.watchers.push(user);
+						if (data.watchersSet.indexOf(user.id) == -1) {
+							if (data.usersSet.indexOf(user.id) != -1) {
+								data.usersSet.splice(data.usersSet.indexOf(user.id));
+								let addUserRequest: addUserToListRequest = {
+									token: this.auth.token,
+									idList: this.idList,
+									idUser: user.id
+								};
+								this.ls.delUserToList(addUserRequest).subscribe(res => {
+								}, err => {
+									this.showError(err);
+								});
+							}
+							let addWatcherRequest: addWatcherToListRequest = {
+								token: this.auth.token,
+								idList: this.idList,
+								idUser: user.id
+							};
+							this.ls.addWatcherToList(addWatcherRequest).subscribe(res => {
+							}, err => {
+								this.showError(err);
+							});
+						}
+						else {
+							data.watchersSet.splice(data.watchersSet.indexOf(user.id), 1);
+						}
+					}
+				}
+				data.usersSet.forEach((id) => {
+					let addUserRequest: addUserToListRequest = {
+						token: this.auth.token,
+						idList: this.idList,
+						idUser: id
+					};
+					this.ls.delUserToList(addUserRequest).subscribe(res => {
+					}, err => {
+						this.showError(err);
+					});
+				});
+				data.watchersSet.forEach((id) => {
+					let addUserRequest: addUserToListRequest = {
+						token: this.auth.token,
+						idList: this.idList,
+						idUser: id
+					};
+					this.ls.delWatcherToList(addUserRequest).subscribe(res => {
+
+					}, err => {
+						this.showError(err);
+					});
+				})
+			}
+		});
+		addUserModal.present();
+
+	}
 }
