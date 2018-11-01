@@ -38,7 +38,7 @@ export class HomePage {
 
 			this.listService.initOnListDeleted().subscribe((list: DeletedFromList) => {
 				let index = this.lists.findIndex((l) => l.id === list.list.id)
-				this.lists.splice(index)
+				this.lists.splice(index, 1)
 			})
 		}, (err: string) => {
 			this.nav.setRoot(LoginPage);

@@ -140,7 +140,7 @@ export class GetListPage {
 
 		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
 			let index = this.list.items.findIndex((i) => i.id === res.item.id)
-			this.list.items.splice(index)
+			this.list.items.splice(index, 1)
 		})
 
 		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
