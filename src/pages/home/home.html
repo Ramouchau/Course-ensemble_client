@@ -19,24 +19,35 @@
 </ion-header>
 
 <ion-content padding class="list-big-content">
-
-  <div class="list-big">
-    <h1 ion-title class="heroTitle" >Vos Listes</h1>
-    <ion-list>
-      <button class="list-item" ion-item *ngFor="let list of lists" (click)="openList(list)">
-        <ion-row padding class="content-row" >
-          <ion-col no-padding width-33 class="item-avatar">
-            <img class="avatar-image"  [src]="'/assets/imgs/cadie.svg'">
-          </ion-col>
-          <ion-col no-padding width-57 class="item-content">
-            <h3 class="item-title listTitle">{{list.name}}</h3>
-            <p class="item-description" rows="3">lorem</p>
-          </ion-col>
-          <ion-col no-padding width-10 class="item-icon">
-            <ion-icon name="arrow-forward" class="fleche"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </button>
-    </ion-list>
-  </div>
+    <ion-card *ngFor="let list of lists">
+      <ion-card-header style="padding: 0.5rem; padding-bottom: 0px">
+        <ion-item style="padding-left: 0px; border-bottom-width: 1px;border-bottom-style: solid;">
+        <button ion-item (click)="openList(list)">
+          <ion-row>
+            {{list.name}}
+          </ion-row>
+          <ion-row>
+            <small>Ajouté par {{list.owner.username}}</small>
+          </ion-row>
+        </button>
+        <ion-icon item-end (click)="deleteList(i)" name="trash"></ion-icon>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content style="margin-top:2px;">
+        <ion-item style="padding-top:0.5rem" (click)="openList(list)">
+          <ion-icon name="cart" item-start></ion-icon>
+          Produits
+          <ion-badge item-end>{{list.nbItems}}</ion-badge>
+        </ion-item>
+        <ion-item style="padding-bottom:0.5rem">
+          <ion-icon name="contacts" item-start></ion-icon>
+          Partages
+          <ion-badge item-end>{{list.nbUsers}}</ion-badge>
+        </ion-item>
+          <small style="margin-top: 10px;">
+            <ion-icon name="calendar" item-start></ion-icon>
+            Dernière modification le {{ list.updateAt | date:'dd/MM à HH:mm' }}
+          </small>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
