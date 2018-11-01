@@ -27,7 +27,7 @@ export class NotificationsServiceProvider {
       this.auth.getUser().subscribe((res: UserToken) => {
         if (data.user && res.id !== data.user.id) {
           // j'ai laissé le console.log en commentaire comme ça si on veut voir le message sur navigateur suffit de le décommenter
-          // console.log(data.user.username + " a modifié " + data.item.name + " sur la liste " + data.listName + " !");
+          console.log(data.user.username + " a modifié " + data.item.name + " sur la liste " + data.listName + " !");
           this.localNotifications.schedule({
             text: data.user.username + " a modifié " + data.item.name + " sur la liste " + data.listName + " !",
             led: 'FF0000',
