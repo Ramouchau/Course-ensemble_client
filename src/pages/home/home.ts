@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import {NavController, IonicPage, AlertController, NavOptions} from 'ionic-angular';
 import { AuthService } from "../../providers/auth-service";
 import { CreatelistPage } from '../createlist/createlist';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
 import { ListService } from '../../providers/list-service';
-import { ClientList, GetAllListResponce, AddedToList } from '../../interfaces/list-interfaces';
+import {
+    ClientList,
+    GetAllListResponce,
+    AddedToList,
+    updateItemRequest,
+    DeleteListRequest
+} from '../../interfaces/list-interfaces';
 import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +25,7 @@ import {LoginPage} from "../login/login";
 export class HomePage {
 	public lists: Array<ClientList>
 
-	constructor(private nav: NavController, private auth: AuthService, private listService: ListService, private localNotifications: LocalNotifications, private splashScreen: SplashScreen) {
+	constructor(private nav: NavController, private auth: AuthService, private listService: ListService, private localNotifications: LocalNotifications, private splashScreen: SplashScreen, public alertCtrl: AlertController, public ls: ListService) {
 		this.auth.getUser().subscribe((user: UserToken) => {
 			this.listService.getAllList({ token: this.auth.token}).subscribe((lists: GetAllListResponce) => {
 				this.lists = lists.lists
@@ -51,4 +57,43 @@ export class HomePage {
 			this.nav.setRoot('LoginPage')
 		});
 	}
+	public deleteList(index)
+	{
+		let alert = this.alertCtrl.create({
+            title: 'Suppression de liste',
+            message: 'Êtes-vous sûr de vouloir supprimer cette liste ?',
+            buttons: [
+                {
+                    text: 'Annuler',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Confirmer',
+                    handler: () => {
+                    	let idList = this.lists[index].id;
+                        let delListRequest: DeleteListRequest = {token: this.auth.token, id: idList};
+                        this.ls.deleteList(delListRequest).subscribe(res => {
+                        	this.lists.splice(index, 1);
+                        }, err => {
+                            this.showError(err);
+                        });
+                    }
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    private showError(text) {
+
+        let alert = this.alertCtrl.create({
+            title: 'Fail',
+            subTitle: text,
+            buttons: ['OK']
+        });
+        alert.present(<NavOptions>prompt);
+    }
 }

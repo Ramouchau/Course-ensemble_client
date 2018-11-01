@@ -19,7 +19,7 @@
 </ion-header>
 
 <ion-content padding class="list-big-content">
-    <ion-card *ngFor="let list of lists">
+    <ion-card *ngFor="let list of lists; let i = index">
       <ion-card-header style="padding: 0.5rem; padding-bottom: 0px">
         <ion-item style="padding-left: 0px; border-bottom-width: 1px;border-bottom-style: solid;">
         <button ion-item (click)="openList(list)">
