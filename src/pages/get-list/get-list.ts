@@ -50,13 +50,18 @@ export class GetListPage {
 			});
 		});
 
-		this.ls.initOnUserAddedToList().subscribe((res: ItemAdded) => {
+		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
 			this.list.items.push(res.item);
 		});
 
-		this.ls.initOnListDeleted().subscribe((res: ItemDeleted) => {
+		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
 			let index = this.list.items.findIndex((i) => i.id === res.item.id)
 			this.list.items.splice(index)
+		})
+
+		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
+			let index = this.list.items.findIndex((i) => i.id === res.item.id)
+			this.list.items[index] = res.item
 		})
 	}
 	public editItem(item) {

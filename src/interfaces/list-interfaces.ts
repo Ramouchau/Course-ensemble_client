@@ -149,3 +149,8 @@ export interface ItemDeleted {
 	by: string
 	item: ClientItem
 }
+
+export interface ItemUpdated {
+	by: string
+	item: ClientItem
+}

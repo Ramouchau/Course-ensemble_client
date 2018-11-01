@@ -26,7 +26,10 @@ import {
 	UpdateListRequest,
 	UpdateListResponse,
 	AddedToList,
-	DeletedFromList
+	DeletedFromList,
+	ItemAdded,
+	ItemDeleted,
+	ItemUpdated
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -47,7 +50,6 @@ export class ListService {
 	}
 	public getOneListById(list: GetListRequest) {
 		return Observable.create(observer => {
-			console.log("observable")
 			this.socket.emit('get-list-bid', list)
 			this.socket.fromEventOnce<CreateListResponse>("get-list-bid").then(res => {
 				if (res.code != 200)
@@ -190,7 +192,7 @@ export class ListService {
 
 	public initOnItemAdded() {
 		return Observable.create(observer => {
-			this.socket.on("item-added", (data: DeletedFromList) => {
+			this.socket.on("item-added", (data: ItemAdded) => {
 				observer.next(data);
 			})
 		});
@@ -198,7 +200,15 @@ export class ListService {
 
 	public initOnItemDeleted() {
 		return Observable.create(observer => {
-			this.socket.on("item-deleted", (data: DeletedFromList) => {
+			this.socket.on("item-deleted", (data: ItemDeleted) => {
+				observer.next(data);
+			})
+		});
+	}
+
+	public initOnItemUpdated() {
+		return Observable.create(observer => {
+			this.socket.on("item-updated", (data: ItemUpdated) => {
 				observer.next(data);
 			})
 		});
