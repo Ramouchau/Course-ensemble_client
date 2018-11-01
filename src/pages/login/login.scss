@@ -63,9 +63,16 @@ page-login {
     }
 
     .register-btn {
-      color: #ff7c00;
+      color: white;
       font-size: 0.8em;
+      background: #ff7c00;
+       border-radius: 30px !important;
+       border: 1px solid #ff7c00;
+       border-top: 1x solid #ff7c00;
     }
   }
 
+}
+.loggin{
+  color: white
 }
