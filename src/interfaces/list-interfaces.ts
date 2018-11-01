@@ -9,8 +9,8 @@ export interface ClientItem {
 }
 
 export interface ClientList {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     items?: ClientItem[];
     users?: UserToken[]
     watchers?: UserToken[];
@@ -138,4 +138,15 @@ export interface AddedToList {
 export interface DeletedFromList {
     by: string
     list: ClientList
+}
+
+export interface DeleteListRequest {
+    token: string;
+    id: number;
+}
+
+export interface DeleteListResponse {
+    status: string;
+    code: number;
+    idList?: number;
 }

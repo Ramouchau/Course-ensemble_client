@@ -25,7 +25,7 @@ import {
     updateItemResponce,
     UpdateListRequest,
     UpdateListResponse,
-    AddedToList
+    AddedToList, DeleteListRequest, DeleteListResponse
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -114,6 +114,18 @@ public getOneListById(list: GetListRequest) {
             });
         });
     }
+    public deleteList(deleteListRequest: DeleteListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('delete-list', deleteListRequest)
+            this.socket.fromEventOnce<DeleteListResponse>("delete-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+
 
     public searchUser(searchRequest: searchUserRequest) {
         return Observable.create(observer => {

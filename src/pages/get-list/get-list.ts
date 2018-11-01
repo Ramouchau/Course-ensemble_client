@@ -31,7 +31,7 @@ export class GetListPage {
 
     public actList = null;
     public idList = null;
-    private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}};
+    private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}, id: -1, name:""};
     private nameListController = new FormControl('');
     private changeName$: Subscription;
   constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
