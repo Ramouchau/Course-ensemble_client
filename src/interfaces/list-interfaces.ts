@@ -9,12 +9,15 @@ export interface ClientItem {
 }
 
 export interface ClientList {
-	id?: number
-	name?: string
-	items?: ClientItem[]
-	users?: UserToken[]
-	watchers?: UserToken[]
-    owner?: UserToken
+    id: number;
+    name: string;
+    items?: ClientItem[];
+    users?: UserToken[]
+    watchers?: UserToken[];
+    owner?: UserToken;
+    nbItems?: number;
+    nbUsers?: number;
+    updateAt?: Date
 }
 
 export interface GetAllListRequest {
