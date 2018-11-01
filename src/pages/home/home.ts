@@ -31,7 +31,7 @@ export class HomePage {
 			});
 
 			this.listService.initOnListDeleted().subscribe((list: DeletedFromList) => {
-				let index = this.lists.findIndex((l) => l.id === user.id)
+				let index = this.lists.findIndex((l) => l.id === list.list.id)
 				this.lists.splice(index)
 			})
 		}, (err: string) => {
