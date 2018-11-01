@@ -34,6 +34,8 @@ export class GetListPage {
     private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}};
     private nameListController = new FormControl('');
     private changeName$: Subscription;
+    private isOwner = false;
+    private canEdit = false;
   constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
   {
       this.actList = navParams.get("list");
@@ -120,7 +122,15 @@ export class GetListPage {
               this.list = res.list;
               console.log(res.list);
               console.log(res);
-          }, err => {
+              if (this.list.owner.id === this.auth.user.id) {
+                  this.isOwner = true;
+                  this.canEdit = true;
+              }
+              this.list.users.forEach(element => {
+                  if (element.id === this.auth.user.id)
+                    this.canEdit = true;
+                });
+            }, err => {
               this.showError(err);
           });
       }
