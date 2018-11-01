@@ -7,29 +7,31 @@ import { UserRegisterRequest, UserLoginResponse, UserRegisterResponse, GetUserRe
 
 import 'rxjs/add/operator/map';
 import {
-	addItemToListRequest,
-	addUserToListRequest,
-	addUserToListResponce,
-	addWatcherToListRequest,
-	addWatcherToListResponce,
-	CreateListRequest,
-	CreateListResponse,
-	deleteItemRequest,
-	deleteItemResponce,
-	GetAllListRequest,
-	GetAllListResponce,
-	GetListRequest,
-	searchUserRequest,
-	searchUserResponce,
-	updateItemRequest,
-	updateItemResponce,
-	UpdateListRequest,
-	UpdateListResponse,
-	AddedToList,
-	DeletedFromList,
-	ItemAdded,
-	ItemDeleted,
-	ItemUpdated
+    addItemToListRequest,
+    addUserToListRequest,
+    addUserToListResponce,
+    addWatcherToListRequest,
+    addWatcherToListResponce,
+    CreateListRequest,
+    CreateListResponse,
+    deleteItemRequest,
+    deleteItemResponce,
+    GetAllListRequest,
+    GetAllListResponce,
+    GetListRequest,
+    searchUserRequest,
+    searchUserResponce,
+    updateItemRequest,
+    updateItemResponce,
+    UpdateListRequest,
+    UpdateListResponse,
+    AddedToList,
+    DeleteListRequest,
+    DeleteListResponse,	
+    DeletedFromList,
+    ItemAdded,
+    ItemDeleted,
+    ItemUpdated
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -84,39 +86,50 @@ export class ListService {
 		});
 	}
 
-	public updateItem(item: updateItemRequest) {
-		return Observable.create(observer => {
-			this.socket.emit('update-item', item)
-			this.socket.fromEventOnce<updateItemResponce>("update-item").then(res => {
-				if (res.code != 200)
-					observer.error(res.status);
-				observer.next(res);
-				observer.complete();
-			});
-		});
-	}
-	public updateList(list: UpdateListRequest) {
-		return Observable.create(observer => {
-			this.socket.emit('update-list', list)
-			this.socket.fromEventOnce<UpdateListResponse>("update-list").then(res => {
-				if (res.code != 200)
-					observer.error(res.status);
-				observer.next(res);
-				observer.complete();
-			});
-		});
-	}
-	public deleteItem(itemRequest: deleteItemRequest) {
-		return Observable.create(observer => {
-			this.socket.emit('delete-item', itemRequest)
-			this.socket.fromEventOnce<deleteItemResponce>("delete-item").then(res => {
-				if (res.code != 200)
-					observer.error(res.status);
-				observer.next(res);
-				observer.complete();
-			});
-		});
-	}
+    public updateItem(item: updateItemRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('update-item', item)
+            this.socket.fromEventOnce<updateItemResponce>("update-item").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public updateList(list: UpdateListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('update-list', list)
+            this.socket.fromEventOnce<UpdateListResponse>("update-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public deleteItem(itemRequest: deleteItemRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('delete-item', itemRequest)
+            this.socket.fromEventOnce<deleteItemResponce>("delete-item").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
+    public deleteList(deleteListRequest: DeleteListRequest) {
+        return Observable.create(observer => {
+            this.socket.emit('delete-list', deleteListRequest)
+            this.socket.fromEventOnce<DeleteListResponse>("delete-list").then(res => {
+                if (res.code != 200)
+                    observer.error(res.status);
+                observer.next(res);
+                observer.complete();
+            });
+        });
+    }
 
 	public searchUser(searchRequest: searchUserRequest) {
 		return Observable.create(observer => {

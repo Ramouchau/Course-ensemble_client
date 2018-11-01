@@ -9,12 +9,15 @@ export interface ClientItem {
 }
 
 export interface ClientList {
-	id?: number
-	name?: string
-	items?: ClientItem[]
-	users?: UserToken[]
-	watchers?: UserToken[]
-    owner?: UserToken
+    id?: number;
+    name?: string;
+    items?: ClientItem[];
+    users?: UserToken[]
+    watchers?: UserToken[];
+    owner?: UserToken;
+    nbItems?: number;
+    nbUsers?: number;
+    updateAt?: Date
 }
 
 export interface GetAllListRequest {
@@ -153,4 +156,15 @@ export interface ItemDeleted {
 export interface ItemUpdated {
 	by: string
 	item: ClientItem
+}
+
+export interface DeleteListRequest {
+    token: string;
+    id: number;
+}
+
+export interface DeleteListResponse {
+    status: string;
+    code: number;
+    idList?: number;
 }

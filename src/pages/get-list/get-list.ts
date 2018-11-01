@@ -28,27 +28,112 @@ import { AddUserModalPage } from "../add-user-modal/add-user-modal";
 	templateUrl: 'get-list.html',
 })
 export class GetListPage {
-
-	public actList = null;
-	public idList = null;
-	private list: ClientList = { watchers: [], users: [], owner: { id: -1, username: "", email: "" } };
-	private nameListController = new FormControl('');
-	private changeName$: Subscription;
-	private isOwner = false;
-	private canEdit = false;
-	constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController) {
-		this.actList = navParams.get("list");
-		this.idList = navParams.get("id");
-		this.changeName$ = this.nameListController.valueChanges.debounceTime(1000).subscribe(newValue => {
-			if (this.list.name == newValue)
-				return;
-			this.list.name = newValue
-			let listRequest: UpdateListRequest = { token: this.auth.token, idList: this.list.id, list: this.list };
-			this.ls.updateList(listRequest).subscribe(res => {
-			}, err => {
-				this.showError(err);
-			});
-		});
+    public actList = null;
+    public idList = null;
+    private list: ClientList = {watchers:[], users:[], owner: {id:-1, username:"", email:""}, id: -1, name:""};
+    private nameListController = new FormControl('');
+    private changeName$: Subscription;
+    private isOwner = false;
+    private canEdit = false;
+  constructor(public navCtrl: NavController, public auth: AuthService, public navParams: NavParams, public ls: ListService, private storage: Storage, private alertCtrl: AlertController, public modalCtrl: ModalController)
+  {
+      this.actList = navParams.get("list");
+      this.idList = navParams.get("id");
+      this.changeName$ = this.nameListController.valueChanges
+          .debounceTime(1000)
+          .subscribe(newValue =>
+          {
+              if (this.list.name == newValue)
+                  return;
+              this.list.name = newValue
+              let listRequest: UpdateListRequest = {token: this.auth.token, idList: this.list.id, list: this.list};
+              this.ls.updateList(listRequest).subscribe(res => {
+              }, err => {
+                  this.showError(err);
+              });
+          });
+  }
+  public editItem(item)
+  {
+      let editItemModal = this.modalCtrl.create(AddItemModalPage, {item: this.list.items[item]});
+      editItemModal.onDidDismiss(data => {
+          if (data && data.item) {
+              let listRequest: updateItemRequest = {token: this.auth.token, idItem: data.item.id, item: data.item};
+              this.ls.updateItem(listRequest).subscribe(res => {
+              }, err => {
+                  this.showError(err);
+              });
+          }
+      });
+      editItemModal.present();
+  }
+  public prepareQuantity(qua)
+  {
+      return (parseInt(qua) == qua) ? ("x" + qua) : qua;
+  }
+  public deleteItem(item)
+  {
+      let deleteRequest : deleteItemRequest = {token: this.auth.token, idItem : this.list.items[item].id};
+      this.ls.deleteItem(deleteRequest).subscribe(res => {
+          this.list.items.splice(item, 1);
+      }, err => {
+          this.showError(err);
+      });
+  }
+  public changeStateItem(item)
+  {
+      this.list.items[item].status = this.list.items[item].status == 1 ? 0 : 1;
+      let listRequest : updateItemRequest = {token: this.auth.token, idItem : this.list.items[item].id, item: this.list.items[item]};
+      this.ls.updateItem(listRequest).subscribe(res => {
+      }, err => {
+          this.showError(err);
+      });
+  }
+  async addItem()
+  {
+      let addItemModal = this.modalCtrl.create(AddItemModalPage, {});
+      addItemModal.onDidDismiss(data => {
+          if (data && data.item)
+          {
+              if (data.edit == false) {
+                  let addItemRequest: addItemToListRequest = {
+                      token: this.auth.token,
+                      idList: this.idList,
+                      item: data.item
+                  };
+                  this.ls.addItemInList(addItemRequest).subscribe(res => {
+                      console.log(res)
+                  }, err => {
+                      this.showError(err);
+                  });
+                  data.item.addBy = this.auth.getUser();
+                  this.list.items.push(data.item);
+              }
+          }
+      });
+      addItemModal.present();
+  }
+  async ionViewDidLoad() {
+      if (this.actList == null)
+      {
+          let listRequest : GetListRequest = {token: await this.storage.get('token'), idList : this.idList};
+          this.ls.getOneListById(listRequest).subscribe(res => {
+              this.list = res.list;
+              console.log(res.list);
+              console.log(res);
+              if (this.list.owner.id === this.auth.user.id) {
+                  this.isOwner = true;
+                  this.canEdit = true;
+              }
+              this.list.users.forEach(element => {
+                  if (element.id === this.auth.user.id)
+                    this.canEdit = true;
+                });
+            }, err => {
+              this.showError(err);
+          });
+      }
+  }
 
 		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
 			this.list.items.push(res.item);
