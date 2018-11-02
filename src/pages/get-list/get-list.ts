@@ -54,7 +54,25 @@ export class GetListPage {
               }, err => {
                   this.showError(err);
               });
-          });
+		  });
+		  this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
+			this.list.items.push(res.item);
+            this.navCtrl.getPrevious().data = {};
+            this.navCtrl.getPrevious().data.editList = this.list;
+		});
+
+		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
+			let index = this.list.items.findIndex((i) => i.id === res.item.id)
+			this.list.items.splice(index, 1)
+            this.navCtrl.getPrevious().data = {};
+            this.navCtrl.getPrevious().data.editList = this.list;
+		})
+
+		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
+			let index = this.list.items.findIndex((i) => i.id === res.item.id)
+			this.list.items[index] = res.item
+		})
+
   }
     public editItem(item)
   {
@@ -145,24 +163,6 @@ export class GetListPage {
               this.showError(err);
           });
       }
-
-		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
-			this.list.items.push(res.item);
-            this.navCtrl.getPrevious().data = {};
-            this.navCtrl.getPrevious().data.editList = this.list;
-		});
-
-		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
-			let index = this.list.items.findIndex((i) => i.id === res.item.id)
-			this.list.items.splice(index, 1)
-            this.navCtrl.getPrevious().data = {};
-            this.navCtrl.getPrevious().data.editList = this.list;
-		})
-
-		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
-			let index = this.list.items.findIndex((i) => i.id === res.item.id)
-			this.list.items[index] = res.item
-		})
 	}
 
 	private showError(text) {
