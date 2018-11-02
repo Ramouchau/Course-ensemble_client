@@ -23,7 +23,7 @@ import {LoginPage} from "../login/login";
 	templateUrl: 'home.html'
 })
 export class HomePage {
-	public lists: Array<ClientList>
+	public lists: Array<ClientList> = []
 	constructor(private nav: NavController, private auth: AuthService, private listService: ListService, private localNotifications: LocalNotifications, private splashScreen: SplashScreen, public alertCtrl: AlertController, public ls: ListService, public navParams: NavParams) {
 		console.log("test");
 
@@ -40,7 +40,6 @@ export class HomePage {
 
             this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
                 this.lists.push(list.list);
-                console.log(list);
                 this.lists = this.lists.sort((list1, list2) => {
                     return list1.updateAt > list2.updateAt ? -1 : 1;
                 })
