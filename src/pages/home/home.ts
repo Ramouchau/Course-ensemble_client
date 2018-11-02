@@ -15,7 +15,6 @@ import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {LoginPage} from "../login/login";
-import {Client} from "ionic/lib/http";
 
 
 @IonicPage()
