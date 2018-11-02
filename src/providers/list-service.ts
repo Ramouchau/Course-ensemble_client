@@ -27,11 +27,11 @@ import {
     UpdateListResponse,
     AddedToList,
     DeleteListRequest,
-    DeleteListResponse,	
+    DeleteListResponse,
     DeletedFromList,
     ItemAdded,
     ItemDeleted,
-    ItemUpdated
+    ItemUpdated, UpdateList
 } from "../interfaces/list-interfaces";
 
 @Injectable()
@@ -226,5 +226,14 @@ export class ListService {
 			})
 		});
 	}
+
+    public initOnListUpdated() {
+        return Observable.create(observer => {
+            this.socket.on("updated-list", (data: UpdateList) => {
+            	console.log(data);
+                observer.next(data);
+            })
+        });
+    }
 
 }

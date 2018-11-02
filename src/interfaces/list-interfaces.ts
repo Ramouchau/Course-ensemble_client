@@ -104,6 +104,12 @@ export interface searchUserRequest {
     research: string;
 }
 
+export interface UpdateList {
+    by?: string;
+    idList: number;
+    list: ClientList;
+}
+
 export interface searchUserResponce {
     status: string;
     code: number;

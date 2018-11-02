@@ -9,7 +9,7 @@ import {
     GetAllListResponce,
     AddedToList,
     updateItemRequest,
-    DeleteListRequest, DeletedFromList
+    DeleteListRequest, DeletedFromList, UpdateList
 } from '../../interfaces/list-interfaces';
 import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
@@ -33,17 +33,24 @@ export class HomePage {
 			}, (err: string) => {
 				console.log(err)
 			})
-			this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
-				this.lists.push(list.list);
-                this.lists = this.lists.sort((list1, list2) => {
-                    return list1.updateAt > list2.updateAt ? -1 : 1;
-                })
-			});
-
 			this.listService.initOnListDeleted().subscribe((list: DeletedFromList) => {
 				let index = this.lists.findIndex((l) => l.id === list.list.id)
 				this.lists.splice(index, 1)
 			})
+
+            this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
+                this.lists.push(list.list);
+                console.log(list);
+                this.lists = this.lists.sort((list1, list2) => {
+                    return list1.updateAt > list2.updateAt ? -1 : 1;
+                })
+            });
+
+            this.listService.initOnListUpdated().subscribe((list: UpdateList) => {
+                console.log("update");
+                let index = this.lists.findIndex((l) => l.id === list.list.id)
+                this.lists[index] = list.list;
+            })
 		}, (err: string) => {
 			this.nav.setRoot(LoginPage);
 		});
