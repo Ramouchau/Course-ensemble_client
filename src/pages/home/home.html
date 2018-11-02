@@ -21,7 +21,7 @@
 <ion-content padding class="list-big-content">
     <ion-card *ngFor="let list of lists; let i = index">
       <ion-card-header style="padding: 0.5rem; padding-bottom: 0px">
-        <ion-item style="padding-left: 0px; border-bottom-width: 1px;border-bottom-style: solid;">
+        <ion-item style="padding-left: 0px;">
         <button ion-item (click)="openList(list)">
           <ion-row>
             {{list.name}}
@@ -30,10 +30,10 @@
             <small>Ajouté par {{list.owner.username}}</small>
           </ion-row>
         </button>
-        <ion-icon item-end (click)="deleteList(i)" name="trash"></ion-icon>
+        <ion-icon item-end (click)="deleteList(list)" name="trash"></ion-icon>
         </ion-item>
       </ion-card-header>
-      <ion-card-content style="margin-top:2px;">
+      <ion-card-content style="margin-top:2px; border-top: 1px solid #ff7c00">
         <ion-item style="padding-top:0.5rem" (click)="openList(list)">
           <ion-icon name="cart" item-start></ion-icon>
           Produits
@@ -44,10 +44,11 @@
           Partages
           <ion-badge item-end>{{list.nbUsers}}</ion-badge>
         </ion-item>
-          <small style="margin-top: 10px;">
+          <small style="margin-top: 10px; color: #440090">
             <ion-icon name="calendar" item-start></ion-icon>
             Dernière modification le {{ list.updateAt | date:'dd/MM à HH:mm' }}
           </small>
       </ion-card-content>
     </ion-card>
 </ion-content>
+

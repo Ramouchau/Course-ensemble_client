@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, IonicPage, AlertController, NavOptions} from 'ionic-angular';
+import {NavController, IonicPage, AlertController, NavOptions, NavParams} from 'ionic-angular';
 import { AuthService } from "../../providers/auth-service";
 import { CreatelistPage } from '../createlist/createlist';
 import { UserToken } from '../../interfaces/auth-socket-interfaces';
@@ -15,6 +15,7 @@ import {GetListPage} from "../get-list/get-list";
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {LoginPage} from "../login/login";
+import {Client} from "ionic/lib/http";
 
 
 @IonicPage()
@@ -24,9 +25,10 @@ import {LoginPage} from "../login/login";
 })
 export class HomePage {
 	public lists: Array<ClientList>
+	constructor(private nav: NavController, private auth: AuthService, private listService: ListService, private localNotifications: LocalNotifications, private splashScreen: SplashScreen, public alertCtrl: AlertController, public ls: ListService, public navParams: NavParams) {
+		console.log("test");
 
-	constructor(private nav: NavController, private auth: AuthService, private listService: ListService, private localNotifications: LocalNotifications, private splashScreen: SplashScreen, public alertCtrl: AlertController, public ls: ListService) {
-		this.auth.getUser().subscribe((user: UserToken) => {
+	    this.auth.getUser().subscribe((user: UserToken) => {
 			this.listService.getAllList({ token: this.auth.token}).subscribe((lists: GetAllListResponce) => {
 				this.lists = lists.lists
 			}, (err: string) => {
@@ -46,6 +48,30 @@ export class HomePage {
 
 		splashScreen.hide();
 	}
+    public ionViewWillEnter() {
+        if (this.navParams.get('addList') != null)
+        {
+            let list = this.navParams.get('addList');
+            list.owner = this.auth.user;
+            list.nbItems = 0;
+            list.nbUsers = 0;
+            console.log(list);
+            this.lists.push(list);
+            this.navParams.data = {};
+        }
+        else if (this.navParams.get('editList') != null)
+        {
+            let list = this.navParams.get('editList');
+            list.nbItems = list.items.length;
+            list.nbUsers = (list.users ? list.users.length: 0) + (list.watchers ? list.watchers.length: 0);
+            list.updateAt = Date.now();
+            console.log(list);
+            console.log(Date.now());
+            let indexOf = this.lists.findIndex((l) => l.id == list.id);
+            this.lists[indexOf] = list;
+            this.navParams.data = {};
+        }
+    }
 	public openList(list)
 	{
         this.nav.push(GetListPage, {
@@ -78,10 +104,11 @@ export class HomePage {
                 {
                     text: 'Confirmer',
                     handler: () => {
-                    	let idList = this.lists[index].id;
+                    	let idList = index.id;
                         let delListRequest: DeleteListRequest = {token: this.auth.token, id: idList};
                         this.ls.deleteList(delListRequest).subscribe(res => {
-                        	this.lists.splice(index, 1);
+                            let indexOf = this.lists.findIndex((l) => l.id == idList);
+                        	this.lists.splice(indexOf, 1);
                         }, err => {
                             this.showError(err);
                         });
@@ -91,7 +118,6 @@ export class HomePage {
         });
         alert.present();
     }
-
     private showError(text) {
 
         let alert = this.alertCtrl.create({

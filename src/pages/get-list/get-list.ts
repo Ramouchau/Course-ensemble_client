@@ -51,9 +51,10 @@ export class GetListPage {
               }, err => {
                   this.showError(err);
               });
+              this.navCtrl.getPrevious().data.editList = this.list;
           });
   }
-  public editItem(item)
+    public editItem(item)
   {
       let editItemModal = this.modalCtrl.create(AddItemModalPage, {item: this.list.items[item]});
       editItemModal.onDidDismiss(data => {
@@ -79,6 +80,7 @@ export class GetListPage {
       }, err => {
           this.showError(err);
       });
+      this.navCtrl.getPrevious().data.editList = this.list;
   }
   public changeStateItem(item)
   {
@@ -112,6 +114,11 @@ export class GetListPage {
           }
       });
       addItemModal.present();
+      this.navCtrl.getPrevious().data.editList = this.list;
+  }
+  prepareList()
+  {
+
   }
   async ionViewDidLoad() {
       if (this.actList == null)
@@ -136,11 +143,13 @@ export class GetListPage {
 
 		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
 			this.list.items.push(res.item);
+            this.navCtrl.getPrevious().data.editList = this.list;
 		});
 
 		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
 			let index = this.list.items.findIndex((i) => i.id === res.item.id)
 			this.list.items.splice(index, 1)
+            this.navCtrl.getPrevious().data.editList = this.list;
 		})
 
 		this.ls.initOnItemUpdated().subscribe((res: ItemDeleted) => {
@@ -252,6 +261,7 @@ export class GetListPage {
 						this.showError(err);
 					});
 				})
+                this.navCtrl.getPrevious().data.editList = this.list;
 			}
 		});
 		addUserModal.present();

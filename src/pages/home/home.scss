@@ -46,5 +46,15 @@ font-size: 1.6em;
 .heroTitle{
   text-align: center;
   color:#440090;
-  font-size: 1.5em; 
+  font-size: 1.5em;
+}
+
+ion-card * ion-icon
+{
+  color: #ff7c00;
+}
+
+.badge-md
+{
+  background-color: #440090;
 }

@@ -4,6 +4,7 @@ import {ClientList, CreateListRequest, CreateListResponse} from "../../interface
 import {ListService} from "../../providers/list-service";
 import {GetListPage} from "../get-list/get-list";
 import { AuthService } from '../../providers/auth-service';
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the CreatelistPage page.
@@ -30,7 +31,10 @@ export class CreatelistPage {
   public createList() {
     let listRequest : CreateListRequest = {token: this.auth.token, listName : this.list.name};
     this.ls.createList(listRequest).subscribe((res: CreateListResponse) => {
-				this.navCtrl.pop()
+        this.list.id = res.idList;
+        this.navCtrl.getPrevious().data.addList = this.list;
+        this.navCtrl.pop()
+        this.navCtrl.getPrevious().data = null;
         this.navCtrl.push(GetListPage, {
             list: null,
             id: res.idList
