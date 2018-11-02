@@ -99,12 +99,14 @@ export class GetListPage {
           if (data && data.item)
           {
               if (data.edit == false) {
-                  this.navCtrl.getPrevious().data.editList = this.list;
                   let addItemRequest: addItemToListRequest = {
                       token: this.auth.token,
                       idList: this.idList,
                       item: data.item
                   };
+                  if (this.navCtrl.getPrevious().data == null)
+                      this.navCtrl.getPrevious().data = {};
+                  this.navCtrl.getPrevious().data.editList = this.list;
                   this.ls.addItemInList(addItemRequest).subscribe(res => {
                       console.log(res)
                   }, err => {
