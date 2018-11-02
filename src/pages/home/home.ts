@@ -48,6 +48,8 @@ export class HomePage {
 		splashScreen.hide();
 	}
     public ionViewWillEnter() {
+	    console.log("enter page")
+        console.log(this.navParams.data);
         if (this.navParams.get('addList') != null)
         {
             let list = this.navParams.get('addList');
@@ -56,7 +58,7 @@ export class HomePage {
             list.nbUsers = 0;
             console.log(list);
             this.lists.push(list);
-            this.navParams.data = {};
+            this.navParams.data.addList = null;
         }
         else if (this.navParams.get('editList') != null)
         {
@@ -68,7 +70,7 @@ export class HomePage {
             console.log(Date.now());
             let indexOf = this.lists.findIndex((l) => l.id == list.id);
             this.lists[indexOf] = list;
-            this.navParams.data = {};
+            this.navParams.data.editList = null;
         }
     }
 	public openList(list)

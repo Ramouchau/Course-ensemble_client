@@ -46,12 +46,13 @@ export class GetListPage {
               if (this.list.name == newValue)
                   return;
               this.list.name = newValue
+			  console.log(this.list.name);
+              this.navCtrl.getPrevious().data.editList = this.list;
               let listRequest: UpdateListRequest = {token: this.auth.token, idList: this.list.id, list: this.list};
               this.ls.updateList(listRequest).subscribe(res => {
               }, err => {
                   this.showError(err);
               });
-              this.navCtrl.getPrevious().data.editList = this.list;
           });
   }
     public editItem(item)
@@ -74,13 +75,13 @@ export class GetListPage {
   }
   public deleteItem(item)
   {
+      this.navCtrl.getPrevious().data.editList = this.list;
       let deleteRequest : deleteItemRequest = {token: this.auth.token, idItem : this.list.items[item].id};
       this.ls.deleteItem(deleteRequest).subscribe(res => {
           this.list.items.splice(item, 1);
       }, err => {
           this.showError(err);
       });
-      this.navCtrl.getPrevious().data.editList = this.list;
   }
   public changeStateItem(item)
   {
@@ -98,6 +99,7 @@ export class GetListPage {
           if (data && data.item)
           {
               if (data.edit == false) {
+                  this.navCtrl.getPrevious().data.editList = this.list;
                   let addItemRequest: addItemToListRequest = {
                       token: this.auth.token,
                       idList: this.idList,
@@ -114,7 +116,6 @@ export class GetListPage {
           }
       });
       addItemModal.present();
-      this.navCtrl.getPrevious().data.editList = this.list;
   }
   prepareList()
   {
@@ -176,6 +177,7 @@ export class GetListPage {
 		let addUserModal = this.modalCtrl.create(AddUserModalPage, { users: this.list.users, watchers: this.list.watchers });
 		addUserModal.onDidDismiss(data => {
 			if (data) {
+                this.navCtrl.getPrevious().data.editList = this.list;
 				this.list.users = [];
 				this.list.watchers = [];
 				for (let user of data.users) {
@@ -261,7 +263,6 @@ export class GetListPage {
 						this.showError(err);
 					});
 				})
-                this.navCtrl.getPrevious().data.editList = this.list;
 			}
 		});
 		addUserModal.present();
