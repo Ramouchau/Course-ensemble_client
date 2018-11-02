@@ -35,6 +35,9 @@ export class HomePage {
 			})
 			this.listService.initOnUserAddedToList().subscribe((list: AddedToList) => {
 				this.lists.push(list.list);
+                this.lists = this.lists.sort((list1, list2) => {
+                    return list1.updateAt > list2.updateAt ? -1 : 1;
+                })
 			});
 
 			this.listService.initOnListDeleted().subscribe((list: DeletedFromList) => {
@@ -48,16 +51,17 @@ export class HomePage {
 		splashScreen.hide();
 	}
     public ionViewWillEnter() {
-	    console.log("enter page")
-        console.log(this.navParams.data);
         if (this.navParams.get('addList') != null)
         {
             let list = this.navParams.get('addList');
             list.owner = this.auth.user;
             list.nbItems = 0;
             list.nbUsers = 0;
-            console.log(list);
+            list.updateAt = Date.now();
             this.lists.push(list);
+            this.lists = this.lists.sort((list1, list2) => {
+                return list1.updateAt > list2.updateAt ? -1 : 1;
+            })
             this.navParams.data.addList = null;
         }
         else if (this.navParams.get('editList') != null)
@@ -66,11 +70,12 @@ export class HomePage {
             list.nbItems = list.items.length;
             list.nbUsers = (list.users ? list.users.length: 0) + (list.watchers ? list.watchers.length: 0);
             list.updateAt = Date.now();
-            console.log(list);
-            console.log(Date.now());
             let indexOf = this.lists.findIndex((l) => l.id == list.id);
             this.lists[indexOf] = list;
             this.navParams.data.editList = null;
+            this.lists = this.lists.sort((list1, list2) => {
+                return list1.updateAt > list2.updateAt ? -1 : 1;
+            })
         }
     }
 	public openList(list)
