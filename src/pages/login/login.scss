@@ -1,7 +1,9 @@
 page-login {
 
+
   .login-content {
     background: white;
+
 
     .logo-row {
       padding-top: 50px;
@@ -33,6 +35,7 @@ page-login {
       text-align: center;
     }
 
+
     ion-item {
       border-radius: 30px !important;
       padding-left: 30px !important;
@@ -43,17 +46,20 @@ page-login {
       
     }
 
+
     .signup-col {
       margin: 0px 16px 0px 16px;
       padding-bottom: 20px;
       color: #ff7c00;
     }
 
+
     .item-inner {
       /* border-bottom-color: #ff7c00 !important; */
      
       box-shadow: none !important;
     }
+
 
     .submit-btn {
       background: #ff7c00;
@@ -62,10 +68,19 @@ page-login {
       border-top: 1x solid #ff7c00;
     }
 
+
     .register-btn {
-      color: #ff7c00;
+      color: white;
       font-size: 0.8em;
+      background: #ff7c00;
+       border-radius: 30px !important;
+       border: 1px solid #ff7c00;
+       border-top: 1x solid #ff7c00;
     }
   }
 
+
+}
+.loggin{
+  color: white
 }
