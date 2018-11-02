@@ -47,6 +47,7 @@ export class GetListPage {
                   return;
               this.list.name = newValue
 			  console.log(this.list.name);
+              this.navCtrl.getPrevious().data = {};
               this.navCtrl.getPrevious().data.editList = this.list;
               let listRequest: UpdateListRequest = {token: this.auth.token, idList: this.list.id, list: this.list};
               this.ls.updateList(listRequest).subscribe(res => {
@@ -75,6 +76,7 @@ export class GetListPage {
   }
   public deleteItem(item)
   {
+      this.navCtrl.getPrevious().data = {};
       this.navCtrl.getPrevious().data.editList = this.list;
       let deleteRequest : deleteItemRequest = {token: this.auth.token, idItem : this.list.items[item].id};
       this.ls.deleteItem(deleteRequest).subscribe(res => {
@@ -146,12 +148,14 @@ export class GetListPage {
 
 		this.ls.initOnItemAdded().subscribe((res: ItemAdded) => {
 			this.list.items.push(res.item);
+            this.navCtrl.getPrevious().data = {};
             this.navCtrl.getPrevious().data.editList = this.list;
 		});
 
 		this.ls.initOnItemDeleted().subscribe((res: ItemDeleted) => {
 			let index = this.list.items.findIndex((i) => i.id === res.item.id)
 			this.list.items.splice(index, 1)
+            this.navCtrl.getPrevious().data = {};
             this.navCtrl.getPrevious().data.editList = this.list;
 		})
 
@@ -179,6 +183,7 @@ export class GetListPage {
 		let addUserModal = this.modalCtrl.create(AddUserModalPage, { users: this.list.users, watchers: this.list.watchers });
 		addUserModal.onDidDismiss(data => {
 			if (data) {
+                this.navCtrl.getPrevious().data = {};
                 this.navCtrl.getPrevious().data.editList = this.list;
 				this.list.users = [];
 				this.list.watchers = [];
